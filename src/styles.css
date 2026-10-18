@@ -953,3 +953,11 @@
     0 0 30px rgba(154, 253, 13, 0.4),
     0 20px 40px rgba(0, 0, 0, 0.8) !important;
 }
+
+.showreel-shrunk [data-overlay] {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+[data-overlay] {
+  transition: opacity 0.3s ease;
+}

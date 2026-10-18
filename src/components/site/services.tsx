@@ -94,14 +94,15 @@ export function Services() {
             >
               <span>We help </span>
               {/* Looping Eye Video Pill inside headline */}
-              <span className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-1 h-[36px] w-[86px] sm:h-[46px] sm:w-[110px] lg:h-[58px] lg:w-[134px] overflow-hidden rounded-full border border-white/20 bg-black shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] relative shrink-0">
+              <span data-showreel-target className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-1 h-[36px] w-[86px] sm:h-[46px] sm:w-[110px] lg:h-[58px] lg:w-[134px] overflow-hidden rounded-full border border-white/20 bg-black shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] relative shrink-0">
                 <video
                   src="/eye-loop.mp4"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="size-full object-cover scale-110 pointer-events-none"
+                  className="size-full object-cover scale-110 pointer-events-none transition-opacity duration-300"
+                  style={{ opacity: "var(--eye, 1)" }}
                 />
               </span>
               <span>you design</span>

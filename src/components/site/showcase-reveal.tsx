@@ -187,10 +187,9 @@ export function ShowcaseReveal() {
         >
           {/* Card frame */}
           <div
-            className="relative h-full overflow-hidden border border-border bg-ink shadow"
+            className="relative h-full overflow-hidden border border-border bg-ink shadow-[0_60px_140px_-40px_rgba(0,0,0,0.95)]"
             style={{ borderRadius: "var(--r, 28px)", padding: "var(--pad, 14px)" }}
           >
-          <div className="hidden shadow-[0_60px_140px_-40px_rgba(0,0,0,0.95)]">
             {/* Inner video player container (matches focused selector) */}
             <div
               className="group relative h-full w-full cursor-pointer overflow-hidden bg-black"
