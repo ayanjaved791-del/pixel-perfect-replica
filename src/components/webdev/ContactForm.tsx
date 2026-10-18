@@ -22,7 +22,7 @@ export const ContactForm: React.FC = () => {
     return () => clearInterval(timer);
   }, [contact.testimonials.length]);
 
-  const currentT = contact.testimonials[activeTestimonial];
+  const currentT = contact.testimonials[activeTestimonial]!;
 
   const serviceOptions = [
     "Branding & Strategy",

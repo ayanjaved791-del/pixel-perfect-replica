@@ -88,7 +88,7 @@ export const GreenHerringboneBackground: React.FC = () => {
       const drawTile = (tx: number, ty: number, tw: number, th: number) => {
         const seed = Math.abs(Math.sin(tx * 12.9898 + ty * 78.233) * 43758.5453);
         const paletteIdx = Math.floor(seed) % greenPalette.length;
-        const p = greenPalette[paletteIdx];
+        const p = greenPalette[paletteIdx]!;
 
         const inset = groutWidth / 2;
         const bx = tx + inset;
