@@ -99,7 +99,7 @@ export function ShowcaseReveal() {
       let radius = 28 * s;
       if (pill) {
         const pTop = pill.y - sy;
-        const raw = clamp((vh - pTop) / (vh * 0.7));
+        const raw = clamp((vh * 1.05 - pTop) / (vh * 1.0));
         m = raw < 0.5 ? 4 * raw * raw * raw : 1 - Math.pow(-2 * raw + 2, 3) / 2;
         cx += (pill.x + pill.w / 2 - cx) * m;
         cy += (pTop + pill.h / 2 - cy) * m;
@@ -125,7 +125,7 @@ export function ShowcaseReveal() {
     const loop = () => {
       targetY = window.scrollY;
       const diff = targetY - currentY;
-      currentY += Math.abs(diff) < 0.3 ? diff : diff * 0.14;
+      currentY += Math.abs(diff) < 0.3 ? diff : diff * 0.075;
       if (currentY !== lastRendered || diff !== 0) {
         render(currentY);
         lastRendered = currentY;
