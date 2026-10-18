@@ -30,88 +30,125 @@ export function ShowcaseReveal() {
     }
 
     let raf = 0;
-    let target = 0;
-    let current = -1;
+    let targetY = window.scrollY;
+    let currentY = targetY;
+    let lastRendered = -1;
 
-    const readProgress = () => {
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const travel = rect.height - vh;
-      return clamp(travel > 0 ? -rect.top / travel : 0);
+    // Cached layout (document coordinates) — no layout reads per frame
+    let secTop = 0;
+    let secH = 0;
+    let vw = 0;
+    let vh = 0;
+    let W0 = 0;
+    let H0 = 0;
+    let pill: { x: number; y: number; w: number; h: number } | null = null;
+    let pillEl: HTMLElement | null = null;
+
+    const docOffset = (el: HTMLElement) => {
+      let x = 0;
+      let y = 0;
+      let n: HTMLElement | null = el;
+      while (n) {
+        x += n.offsetLeft;
+        y += n.offsetTop;
+        n = n.offsetParent as HTMLElement | null;
+      }
+      return { x, y };
     };
 
-    const render = (p: number) => {
-      const w = window.innerWidth;
-      const e = easeOutCubic(p);
+    const measure = () => {
+      vw = window.innerWidth;
+      vh = window.innerHeight;
+      const o = docOffset(section);
+      secTop = o.y;
+      secH = section.offsetHeight;
+      W0 = media.offsetWidth;
+      H0 = vh * (vw < 640 ? 0.86 : 0.88);
+      media.style.height = `${H0}px`;
+      pillEl = document.querySelector<HTMLElement>("[data-showreel-target]");
+      if (pillEl) {
+        const p = docOffset(pillEl);
+        pill = { x: p.x, y: p.y, w: pillEl.offsetWidth, h: pillEl.offsetHeight };
+      }
+      lastRendered = -1;
+    };
 
-      const mobile = w < 640;
-      const tablet = w >= 640 && w < 1024;
-      const startY = mobile ? 12 : tablet ? 15 : 18; // vh
+    const render = (sy: number) => {
+      const mobile = vw < 640;
+      const tablet = vw >= 640 && vw < 1024;
+      const startY = (mobile ? 12 : tablet ? 15 : 18) * (vh / 100);
       const startScale = mobile ? 0.72 : tablet ? 0.65 : 0.58;
 
+      const travel = secH - vh;
+      const p = clamp(travel > 0 ? (sy - secTop) / travel : 0);
+      const e = easeOutCubic(p);
       const y = startY * (1 - e);
       const s = startScale + (1 - startScale) * e;
-      const vh = window.innerHeight;
 
-      // Phase 2: shrink into the headline pill in the next section
-      const pillEl = document.querySelector<HTMLElement>("[data-showreel-target]");
-      const sticky = stickyRef.current;
+      // Where the sticky container sits at the smoothed scroll vs the real scroll
+      const stickyAt = (scroll: number) =>
+        Math.min(Math.max(secTop - scroll, 0), secTop + secH - vh - scroll);
+      const realTop = stickyAt(window.scrollY);
+      const smoothTop = stickyAt(sy);
+
       let m = 0;
-      let dx = 0;
-      let dy = 0;
-      const W0 = Math.min(w * 0.94, 1700);
-      const H0 = vh * (mobile ? 0.86 : 0.88);
-      let mw = W0;
-      let mh = H0;
-      if (pillEl && sticky) {
-        const pr = pillEl.getBoundingClientRect();
-        const cr = sticky.getBoundingClientRect();
-        const raw = clamp((vh - pr.top) / (vh * 0.7));
+      let cx = vw / 2;
+      let cy = smoothTop + vh / 2 + y;
+      let visW = W0 * s;
+      let visH = H0 * s;
+      let radius = 28 * s;
+      if (pill) {
+        const pTop = pill.y - sy;
+        const raw = clamp((vh - pTop) / (vh * 0.7));
         m = raw < 0.5 ? 4 * raw * raw * raw : 1 - Math.pow(-2 * raw + 2, 3) / 2;
-        const ccx = cr.left + cr.width / 2;
-        const ccy = cr.top + cr.height / 2;
-        const startCy = ccy + (y * vh) / 100;
-        dx = (pr.left + pr.width / 2 - ccx) * m;
-        dy = (startCy - ccy) + (pr.top + pr.height / 2 - startCy) * m;
-        mw = W0 + (pr.width - W0) * m;
-        mh = H0 + (pr.height - H0) * m;
-        media.style.setProperty("--r", `${28 + (mh / 2 - 28) * m}px`);
-        media.style.setProperty("--pad", `${(mobile ? 8 : 14) * (1 - m)}px`);
+        cx += (pill.x + pill.w / 2 - cx) * m;
+        cy += (pTop + pill.h / 2 - cy) * m;
+        visW += (pill.w - visW) * m;
+        visH += (pill.h - visH) * m;
+        radius += (pill.h / 2 - radius) * m;
         media.classList.toggle("showreel-shrunk", m > 0.15);
-        pillEl.style.setProperty("--eye", m > 0.02 ? "0" : "1");
+        pillEl?.style.setProperty("--eye", m > 0.02 ? "0" : "1");
       }
-      const sc = m > 0 ? 1 + (s - 1) * (1 - m) : s;
-      media.style.width = `${mw.toFixed(2)}px`;
-      media.style.height = `${mh.toFixed(2)}px`;
-      media.style.transform =
-        m > 0
-          ? `translate3d(calc(-50% + ${dx.toFixed(2)}px), calc(-50% + ${dy.toFixed(2)}px), 0) scale(${sc.toFixed(4)})`
-          : `translate3d(-50%, calc(-50% + ${y.toFixed(3)}vh), 0) scale(${s.toFixed(4)})`;
+
+      const k = visH / H0; // uniform scale keeps video undistorted
+      const clipW = visW / k;
+      const inset = Math.max(0, (W0 - clipW) / 2);
+      const dx = cx - vw / 2;
+      const dy = cy - (realTop + vh / 2);
+
+      media.style.transform = `translate3d(calc(-50% + ${dx.toFixed(2)}px), calc(-50% + ${dy.toFixed(2)}px), 0) scale(${k.toFixed(4)})`;
+      media.style.clipPath = `inset(0 ${inset.toFixed(2)}px round ${(radius / k).toFixed(2)}px)`;
       media.style.opacity = String(0.7 + 0.3 * clamp(e * 1.5));
       if (glowRef.current) glowRef.current.style.opacity = String(0.4 * (1 - e));
     };
 
     const loop = () => {
-      const diff = target - current;
-      current += Math.abs(diff) < 0.0005 ? diff : diff * 0.12;
-      render(current);
+      targetY = window.scrollY;
+      const diff = targetY - currentY;
+      currentY += Math.abs(diff) < 0.3 ? diff : diff * 0.14;
+      if (currentY !== lastRendered || diff !== 0) {
+        render(currentY);
+        lastRendered = currentY;
+      }
       raf = requestAnimationFrame(loop);
     };
 
-    const onScroll = () => {
-      target = readProgress();
-    };
+    const onResize = () => measure();
 
-    target = readProgress();
-    current = target;
-    render(current);
+    measure();
+    render(currentY);
     raf = requestAnimationFrame(loop);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    // Re-measure after fonts/images settle
+    const t1 = window.setTimeout(measure, 600);
+    const t2 = window.setTimeout(measure, 2000);
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("load", onResize);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", onResize);
     };
   }, []);
 
