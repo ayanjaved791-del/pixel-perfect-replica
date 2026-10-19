@@ -288,7 +288,10 @@ export function ShowcaseReveal() {
               )}
 
               {/* Bottom Interactive Area */}
-              <div data-overlay className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+              <div
+                data-overlay
+                className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+              >
                 {/* Timeline Progress Bar */}
                 <div
                   className="mb-4 h-1.5 w-full cursor-pointer rounded-full bg-white/20 transition-all hover:h-2.5 group/progress"

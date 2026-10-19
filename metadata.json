@@ -1,0 +1,8 @@
+{
+  "name": "six2eight — Digital Growth Agency",
+  "description": "Connected strategy, design, technology, and marketing for business growth.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
