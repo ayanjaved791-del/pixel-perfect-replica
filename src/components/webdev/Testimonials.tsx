@@ -1,243 +1,207 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { siteData } from "@/data/webdev/siteData";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { motion, useMotionValue, animate } from "motion/react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const Testimonials: React.FC = () => {
   const { testimonials } = siteData;
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [maxIndex, setMaxIndex] = useState(testimonials.items.length - 1);
-  const [cardWidth, setCardWidth] = useState(520);
-  const gap = 24;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftPos = useRef(0);
 
-  const x = useMotionValue(0);
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (!containerRef.current) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      let width = 520;
-      if (window.innerWidth < 640) {
-        width = 300;
-      } else if (window.innerWidth < 1024) {
-        width = 420;
-      }
-      setCardWidth(width);
-
-      const totalTrackWidth = testimonials.items.length * (width + gap) - gap;
-      const maxScroll = Math.max(0, totalTrackWidth - containerWidth + 32);
-      const computedMax = Math.ceil(maxScroll / (width + gap));
-      setMaxIndex(Math.max(0, computedMax));
-    };
-
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, [testimonials.items.length]);
-
-  useEffect(() => {
-    const targetX = -currentIndex * (cardWidth + gap);
-    animate(x, targetX, {
-      type: "spring",
-      damping: 28,
-      stiffness: 220,
-      mass: 0.8,
-    });
-  }, [currentIndex, cardWidth, gap, x]);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+  const updateProgress = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 0) {
+      setScrollProgress(0);
+      return;
+    }
+    const currentProgress = (el.scrollLeft / maxScroll) * 100;
+    setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      el.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, []);
+
+  const handleScroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const amount = 380;
+    el.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    isDown.current = true;
+    startX.current = e.pageX - el.offsetLeft;
+    scrollLeftPos.current = el.scrollLeft;
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    isDown.current = false;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown.current) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    el.scrollLeft = scrollLeftPos.current - walk;
   };
 
   return (
-    <section className="testimonials-sections bg-[#F7F8F9] pt-[64px] md:pt-[100px] lg:pt-[140px] pb-[64px] md:pb-[100px] overflow-hidden select-none">
-      <div className="container mx-auto px-[16px] 2xl:px-0">
-        {/* Header */}
-        <div className="mb-[40px] md:mb-[60px] text-center max-w-4xl mx-auto">
-          <div className="mb-4">
-            <span className="bg-[#070707] text-white text-[15px] md:text-[16px] font-medium leading-[24px] rounded-[40px] px-[16px] py-[8px] inline-flex items-center">
-              <span className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] bg-[#9AFD0D] rounded-full mr-[12px] inline-flex" />
-              {testimonials.block_title}
-            </span>
-          </div>
+    <section className="testimonials-sections bg-white text-neutral-900 py-20 sm:py-28 lg:py-32 overflow-hidden select-none">
+      <div className="container mx-auto px-5 lg:px-8 max-w-7xl">
+        {/* Top Centered Pill Badge */}
+        <div className="flex justify-center mb-4 sm:mb-6">
+          <span className="inline-flex items-center gap-2.5 rounded-full border border-black/10 bg-[#161616] px-4 py-2 text-sm font-medium text-white shadow-xs">
+            <span className="size-2.5 rounded-full bg-[#9AFD0D] shadow-[0_0_12px_#9AFD0D] animate-pulse" />
+            {testimonials.block_title || "Testimonials"}
+          </span>
+        </div>
 
+        {/* Main Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2
-            className="text-[32px] sm:text-[44px] md:text-[54px] lg:text-[clamp(32px,4.25vw,72px)] leading-[1.18] font-semibold tracking-tight text-[#070707]"
+            className="text-3xl sm:text-5xl lg:text-[54px] font-bold tracking-tight text-black leading-[1.14]"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
-            {testimonials.mainTitle}
+            Words from the People
+            <br />
+            We&rsquo;ve Worked With
           </h2>
         </div>
 
-        {/* Testimonials Slider Viewport */}
+        {/* Horizontal Testimonials Carousel Track */}
         <div
-          ref={containerRef}
-          className="w-full overflow-hidden cursor-grab active:cursor-grabbing pb-8 pt-2 px-1"
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeaveOrUp}
+          onMouseUp={handleMouseLeaveOrUp}
+          onMouseMove={handleMouseMove}
+          className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 pt-1 cursor-grab active:cursor-grabbing no-scrollbar scrollbar-none"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <motion.div
-            style={{ x }}
-            drag="x"
-            dragConstraints={{
-              left: -(
-                testimonials.items.length * (cardWidth + gap) -
-                (containerRef.current?.offsetWidth || 1000) +
-                40
-              ),
-              right: 0,
-            }}
-            dragElastic={0.12}
-            onDragEnd={() => {
-              const currentX = x.get();
-              const newIndex = Math.round(-currentX / (cardWidth + gap));
-              setCurrentIndex(Math.max(0, Math.min(maxIndex, newIndex)));
-            }}
-            className="flex gap-[20px] md:gap-[24px] w-max will-change-transform"
-          >
-            {testimonials.items.map((item, idx) => (
-              <div key={idx} style={{ width: `${cardWidth}px` }} className="shrink-0">
-                <div className="testimonial-card relative flex flex-col justify-between gap-[28px] md:gap-[40px] bg-white p-[24px] sm:p-[32px] md:p-[40px] rounded-[24px] shadow-md border border-neutral-200/60 h-full min-h-[380px]">
-                  {/* Client Meta Top */}
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3.5">
-                      {item.avatar ? (
-                        <div className="w-[52px] h-[52px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden border-2 border-neutral-100 shrink-0 bg-neutral-100">
-                          <img
-                            src={item.avatar}
-                            alt={item.clientName}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-[52px] h-[52px] rounded-full bg-neutral-900 text-white font-bold flex items-center justify-center">
-                          {item.clientName.charAt(0)}
-                        </div>
-                      )}
-                      <div>
-                        <h4 className="text-[18px] md:text-[20px] font-semibold text-[#070707] leading-tight">
-                          {item.clientName}
-                        </h4>
-                        <p className="text-[13px] md:text-[14px] text-[#717680] mt-0.5">
-                          {item.clientTitle}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Rating Stars */}
-                    <div className="flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
-                      {[...Array(5)].map((_, sIdx) => (
-                        <Star key={sIdx} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
+          {testimonials.items.map((item, idx) => (
+            <div
+              key={`${item.clientName}-${idx}`}
+              className="w-[300px] sm:w-[350px] md:w-[370px] shrink-0"
+            >
+              <div className="relative flex flex-col justify-between h-[250px] sm:h-[270px] rounded-[24px] border border-[#E5E7EB] bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-neutral-300">
+                {/* Card Top: Logo & Company Name */}
+                <div className="flex items-center gap-3 relative z-10">
+                  <div className="size-9 sm:size-10 rounded-full overflow-hidden border border-neutral-100 bg-neutral-100 shrink-0 flex items-center justify-center">
+                    {item.avatar ? (
+                      <img
+                        src={item.avatar}
+                        alt={item.clientName}
+                        className="size-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span className="text-xs font-bold text-neutral-800">
+                        {item.clientName.charAt(0)}
+                      </span>
+                    )}
                   </div>
+                  <h3
+                    className="text-base sm:text-[17px] font-bold text-black tracking-tight"
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                  >
+                    {item.clientName}
+                  </h3>
+                </div>
 
-                  {/* Review Quote Body */}
-                  <div className="flex-1">
-                    <h3
-                      className="text-[20px] md:text-[24px] font-semibold text-[#050414] leading-[1.3] mb-3"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      "{item.reviewTitle}"
-                    </h3>
-                    <p
-                      className="text-[#535862] text-[15px] md:text-[16px] leading-[26px]"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {item.reviewText.replace(/<[^>]*>/g, "").trim()}
-                    </p>
-                  </div>
+                {/* Quote Text */}
+                <p className="text-xs sm:text-[14px] text-[#4A4A4A] leading-[22px] sm:leading-[24px] relative z-10 font-normal">
+                  {item.reviewText
+                    ? item.reviewText.replace(/<[^>]*>/g, "").trim()
+                    : item.reviewTitle}
+                </p>
 
-                  {/* Card footer */}
-                  <div className="pt-4 border-t border-neutral-100 flex items-center justify-end text-xs text-neutral-400">
-                    <span>Source: Clutch</span>
-                  </div>
+                {/* Faint Quotation Mark Watermark */}
+                <div
+                  aria-hidden="true"
+                  className="absolute right-5 bottom-3 pointer-events-none select-none z-0"
+                >
+                  <svg className="size-16 sm:size-20 fill-[#F3F4F6]" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
                 </div>
               </div>
-            ))}
-          </motion.div>
+            </div>
+          ))}
         </div>
 
-        {/* Bottom Bar: Rating Score + Slider Controls */}
-        <div className="mt-8 pt-8 border-t border-neutral-200/80 flex flex-col md:flex-row items-center justify-between gap-6 px-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <div className="flex items-center gap-2">
-              <span
-                className="text-[28px] font-bold text-[#070707] tracking-tight"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                {testimonials.ratingScore}
-              </span>
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, idx) => (
-                  <Star key={idx} className="w-5 h-5 fill-[#FBBF24] text-[#FBBF24]" />
-                ))}
-              </div>
-            </div>
-            <div className="h-4 w-px bg-neutral-300 hidden sm:block" />
-            <p
-              className="text-[15px] text-[#535862] max-w-sm"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+        {/* Slider Navigation & Progress Bar Row */}
+        <div className="mt-8 sm:mt-10 flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => handleScroll("left")}
+              aria-label="Previous testimonials"
+              className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-neutral-300 bg-white text-black transition-all hover:bg-neutral-100 hover:border-black active:scale-95 cursor-pointer shadow-xs"
             >
-              {testimonials.clutchText}
-            </p>
+              <ArrowLeft className="size-4 stroke-[2]" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleScroll("right")}
+              aria-label="Next testimonials"
+              className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-neutral-300 bg-white text-black transition-all hover:bg-neutral-100 hover:border-black active:scale-95 cursor-pointer shadow-xs"
+            >
+              <ArrowRight className="size-4 stroke-[2]" />
+            </button>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={handlePrev}
-                disabled={currentIndex === 0}
-                className={`w-11 h-11 rounded-full border border-neutral-300 bg-white text-neutral-800 flex items-center justify-center transition-all cursor-pointer shadow-sm active:scale-95 ${
-                  currentIndex === 0
-                    ? "opacity-40 cursor-not-allowed"
-                    : "hover:bg-black hover:text-white"
-                }`}
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={handleNext}
-                disabled={currentIndex >= maxIndex}
-                className={`w-11 h-11 rounded-full border border-neutral-300 bg-white text-neutral-800 flex items-center justify-center transition-all cursor-pointer shadow-sm active:scale-95 ${
-                  currentIndex >= maxIndex
-                    ? "opacity-40 cursor-not-allowed"
-                    : "hover:bg-[#9AFD0D] hover:text-black hover:border-[#9AFD0D]"
-                }`}
-                aria-label="Next testimonial"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-
-            <a
-              href={testimonials.consultationUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="secondary-buttons button-slide text-sm cursor-pointer whitespace-nowrap"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              <div className="button-text-wrapper">
-                <span className="button-text" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  Book a Free Consultation
-                </span>
-                <span
-                  className="button-text button-text-hover"
-                  aria-hidden="true"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  Book a Free Consultation
-                </span>
-              </div>
-            </a>
+          {/* Progress Bar Track */}
+          <div className="relative h-[2px] w-full max-w-[540px] rounded-full bg-[#E5E7EB] overflow-hidden">
+            <div
+              className="absolute top-0 bottom-0 bg-black rounded-full transition-all duration-200"
+              style={{
+                width: "25%",
+                left: `${(scrollProgress / 100) * 75}%`,
+              }}
+            />
           </div>
+        </div>
+
+        {/* Bottom Happy Customers Count & Consultation CTA Button */}
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <p className="text-xs sm:text-[13px] text-[#4A4A4A] leading-tight font-normal">
+            200+ Happy Customers based on
+            <br />
+            complement and customer reviews
+          </p>
+
+          <a
+            href={
+              testimonials.consultationUrl ||
+              "https://calendly.com/six2eight-sales/li-discovery-call"
+            }
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-[#9AFD0D] px-6 sm:px-7 py-3 text-xs sm:text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95 shadow-xs"
+            style={{ fontFamily: "'Manrope', sans-serif" }}
+          >
+            Book a Free Consultation
+          </a>
         </div>
       </div>
     </section>

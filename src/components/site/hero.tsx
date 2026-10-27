@@ -2,34 +2,6 @@ import { ArrowUpRight, Star } from "lucide-react";
 import { CALENDLY, heroImages } from "@/data/site";
 import { FallingCards } from "./falling-cards";
 
-function Strip({ reverse, duration }: { reverse?: boolean; duration: string }) {
-  const items = [...heroImages, ...heroImages];
-  return (
-    <div className="marquee-mask overflow-hidden">
-      <div
-        className={
-          reverse ? "flex w-max gap-4 animate-marquee-rev" : "flex w-max gap-4 animate-marquee"
-        }
-        style={{ ["--marquee-duration" as string]: duration }}
-      >
-        {items.map((img, i) => (
-          <div
-            key={`${img.src}-${i}`}
-            className="h-32 w-52 shrink-0 overflow-hidden rounded-2xl border border-border bg-surface sm:h-40 sm:w-64"
-          >
-            <img
-              src={img.src}
-              alt={img.alt}
-              loading="lazy"
-              className="size-full object-cover opacity-80 transition-opacity duration-300 hover:opacity-100"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-28 pb-16 sm:pt-32">
@@ -43,10 +15,12 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mx-auto max-w-4xl text-center animate-fade-up">
-          <p className="eyebrow justify-center">
-            <span className="size-1.5 rounded-full bg-primary" />
-            Full-Service Digital Growth Agency
-          </p>
+          <div className="flex justify-center">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-[#6060603D] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+              <span className="size-2.5 rounded-full bg-[#9AFD0D] shadow-[0_0_12px_#9AFD0D] animate-pulse" />
+              Full-Service Digital Growth Agency
+            </span>
+          </div>
           <h1 className="text-display mt-6 text-4xl sm:text-6xl lg:text-7xl">
             <span className="animate-word-in" style={{ ["--word-delay" as string]: "0.05s" }}>
               WE BUILD
@@ -119,11 +93,6 @@ export function Hero() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="relative mt-16 space-y-4">
-        <Strip duration="60s" />
-        <Strip reverse duration="75s" />
       </div>
     </section>
   );

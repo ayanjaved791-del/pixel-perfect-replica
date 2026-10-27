@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { clientLogos } from "@/data/site";
+import { siteData } from "@/data/webdev/siteData";
 import { Reveal } from "./reveal";
 import { Magnetic } from "./magnetic";
 
@@ -13,6 +13,13 @@ export type FeaturedService = {
   copy: string;
   image: string;
   link: string;
+};
+
+export type SubServiceCardItem = {
+  heading: string;
+  description: string;
+  image: string;
+  link?: string;
 };
 
 export const featuredServices: FeaturedService[] = [
@@ -99,39 +106,99 @@ export const featuredServices: FeaturedService[] = [
   },
 ];
 
+export const subServicesCardsList: SubServiceCardItem[] = [
+  ...siteData.subservices.cards.map((c) => ({
+    heading: c.heading,
+    description: c.description,
+    image: c.image,
+    link: "/services/web-development",
+  })),
+  {
+    heading: "UI & UX Design",
+    description:
+      "A great product starts with understanding the user. We design clean, intuitive interfaces that make every interaction feel effortless and purposeful.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/ui-ux-service.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Mobile App Design",
+    description:
+      "Design intuitive, engaging mobile experiences that delight users and drive retention across iOS and Android devices.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/mobile-app.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Webflow Development",
+    description:
+      "Clean, responsive Webflow builds engineered for performance, marketing independence, and rapid iteration.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/webflow-development.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Shopify Development",
+    description:
+      "Turn your storefront into a clear path to purchase, with thoughtful product pages, high-converting checkout, and connected shopping experiences.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/shopify-development.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Brand Identity Systems",
+    description:
+      "Craft iconic brand identities, packaging, and cohesive design systems that make your business instantly recognizable.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/12/brand-identity-hero.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "WordPress Development",
+    description:
+      "High-speed, SEO-friendly WordPress websites with custom functionality and headless architecture that drives results.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/02/wordpress-service-cards.webp",
+    link: "/services/web-development",
+  },
+];
+
 export function Services() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isDown = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
   const isHovered = useRef(false);
+  const isDown = useRef(false);
   const startX = useRef(0);
-  const scrollStart = useRef(0);
+  const dragStartOffset = useRef(0);
+  const isDraggingRef = useRef(false);
 
+  // Smooth continuous GPU-accelerated requestAnimationFrame infinite loop
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
     let animId: number;
-    let scrollPos = el.scrollLeft;
 
     const tick = () => {
-      if (!isHovered.current && !isDown.current && el) {
-        scrollPos += 0.85;
-        const half = el.scrollWidth / 2;
-        if (half > 0 && scrollPos >= half) {
-          scrollPos -= half;
-        }
-        el.scrollLeft = scrollPos;
-      } else if (el) {
-        scrollPos = el.scrollLeft;
+      const track = trackRef.current;
+      if (!track) {
+        animId = requestAnimationFrame(tick);
+        return;
       }
+
+      // Automatically move continuously if not hovered or actively dragging
+      if (!isHovered.current && !isDown.current) {
+        offsetRef.current -= 1.0;
+      }
+
+      // Seamless infinite looping wrap
+      const halfWidth = track.scrollWidth / 2;
+      if (halfWidth > 0) {
+        if (offsetRef.current <= -halfWidth) {
+          offsetRef.current += halfWidth;
+        } else if (offsetRef.current > 0) {
+          offsetRef.current -= halfWidth;
+        }
+      }
+
+      track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
       animId = requestAnimationFrame(tick);
     };
 
     animId = requestAnimationFrame(tick);
-
-    return () => {
-      cancelAnimationFrame(animId);
-    };
+    return () => cancelAnimationFrame(animId);
   }, []);
 
   const handleMouseEnter = () => {
@@ -144,40 +211,70 @@ export function Services() {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollRef.current) return;
     isDown.current = true;
-    startX.current = e.pageX - scrollRef.current.offsetLeft;
-    scrollStart.current = scrollRef.current.scrollLeft;
+    isDraggingRef.current = false;
+    startX.current = e.pageX;
+    dragStartOffset.current = offsetRef.current;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown.current) return;
+    const diff = e.pageX - startX.current;
+    if (Math.abs(diff) > 5) {
+      isDraggingRef.current = true;
+    }
+    offsetRef.current = dragStartOffset.current + diff;
   };
 
   const handleMouseUp = () => {
     isDown.current = false;
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDown.current || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    scrollRef.current.scrollLeft = scrollStart.current - walk;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    isHovered.current = true;
+    isDown.current = true;
+    isDraggingRef.current = false;
+    startX.current = e.touches[0].pageX;
+    dragStartOffset.current = offsetRef.current;
   };
 
-  const handleTouchStart = () => {
-    isHovered.current = true;
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDown.current) return;
+    const diff = e.touches[0].pageX - startX.current;
+    if (Math.abs(diff) > 5) {
+      isDraggingRef.current = true;
+    }
+    offsetRef.current = dragStartOffset.current + diff;
   };
 
   const handleTouchEnd = () => {
     isHovered.current = false;
+    isDown.current = false;
   };
 
   const scroll = (direction: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const distance = 360;
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -distance : distance,
-      behavior: "smooth",
-    });
+    const shift = 380;
+    offsetRef.current += direction === "left" ? shift : -shift;
+    if (trackRef.current) {
+      const halfWidth = trackRef.current.scrollWidth / 2;
+      if (halfWidth > 0) {
+        if (offsetRef.current <= -halfWidth) {
+          offsetRef.current += halfWidth;
+        } else if (offsetRef.current > 0) {
+          offsetRef.current -= halfWidth;
+        }
+      }
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
   };
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (isDraggingRef.current) {
+      e.preventDefault();
+    }
+  };
+
+  const displayCards = [...subServicesCardsList, ...subServicesCardsList];
 
   return (
     <section id="services" className="relative border-t border-border py-20 sm:py-28 bg-background">
@@ -242,7 +339,7 @@ export function Services() {
                     type="button"
                     onClick={() => scroll("left")}
                     aria-label="Previous services"
-                    className="pill flex size-11 items-center justify-center border border-white/20 bg-black/70 text-white backdrop-blur-md transition-all hover:border-white hover:bg-white hover:text-black active:scale-95"
+                    className="pill flex size-11 items-center justify-center border border-white/20 bg-black/70 text-white backdrop-blur-md transition-all hover:border-white hover:bg-white hover:text-black active:scale-95 cursor-pointer"
                   >
                     <ArrowLeft className="size-4" />
                   </button>
@@ -250,7 +347,7 @@ export function Services() {
                     type="button"
                     onClick={() => scroll("right")}
                     aria-label="Next services"
-                    className="pill flex size-11 items-center justify-center border border-white/20 bg-black/70 text-white backdrop-blur-md transition-all hover:border-white hover:bg-white hover:text-black active:scale-95"
+                    className="pill flex size-11 items-center justify-center border border-white/20 bg-black/70 text-white backdrop-blur-md transition-all hover:border-white hover:bg-white hover:text-black active:scale-95 cursor-pointer"
                   >
                     <ArrowRight className="size-4" />
                   </button>
@@ -259,81 +356,56 @@ export function Services() {
             </div>
           </Reveal>
         </div>
+      </div>
 
-        {/* Featured Service Cards Continuous Floating Marquee Carousel */}
+      {/* SubServices Cards Continuous Infinite Horizontal Carousel */}
+      <div
+        ref={containerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="mt-14 sm:mt-18 w-full overflow-hidden select-none cursor-grab active:cursor-grabbing pb-8 pt-2"
+      >
         <div
-          ref={scrollRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          className="mt-14 sm:mt-18 flex gap-5 sm:gap-6 overflow-x-auto pb-6 scrollbar-none no-scrollbar cursor-grab active:cursor-grabbing select-none"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          ref={trackRef}
+          className="flex gap-5 sm:gap-6 w-max will-change-transform pl-5 sm:pl-8"
         >
-          {[...featuredServices, ...featuredServices].map((s, i) => (
-            <div key={`${s.title}-${i}`} className="w-[280px] sm:w-[320px] md:w-[350px] shrink-0">
-              <article className="group relative aspect-[3/4] sm:aspect-[4/5] min-h-[400px] sm:min-h-[460px] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] border border-white/10 bg-[#121212] transition-all duration-500 hover:border-white/30 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]">
-                {/* div 1: Visual Media with subtle hover zoom & gradient shift */}
-                <div className="absolute inset-0 size-full overflow-hidden bg-surface">
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    loading="lazy"
-                    className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 via-50% to-transparent pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 via-65% to-transparent/30 pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  <div className="absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/10 pointer-events-none" />
-                </div>
-
-                {/* div 2: Bottom Title & Expandable Hover Details */}
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7 z-10 pointer-events-none transition-all duration-500">
-                  <h3
-                    className="text-display text-xl sm:text-2xl font-bold text-white tracking-tight leading-[1.2] transition-colors group-hover:text-white"
-                    style={{ fontFamily: "'Manrope', sans-serif" }}
-                  >
-                    {s.title}
-                  </h3>
-
-                  {/* Expandable Details on Hover */}
-                  <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 ease-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3">
-                    <div className="overflow-hidden">
-                      <p className="text-xs sm:text-sm text-[#D4D4D4] font-normal leading-relaxed line-clamp-3">
-                        {s.copy}
-                      </p>
-
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {s.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="pill inline-flex items-center border border-white/20 bg-white/10 px-2.5 py-0.5 text-[11px] font-medium text-white/90 backdrop-blur-md"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="mt-3.5 flex items-center justify-between border-t border-white/10 pt-2.5">
-                        <span className="text-xs font-semibold text-[#9AFD0D] flex items-center gap-1.5">
-                          <span>Explore Service</span>
-                        </span>
-                        <div className="flex size-7 items-center justify-center rounded-full bg-[#9AFD0D] text-black transition-transform group-hover:scale-105">
-                          <ArrowUpRight className="size-3.5 stroke-[2.5]" />
-                        </div>
-                      </div>
-                    </div>
+          {displayCards.map((card, idx) => (
+            <div
+              key={`${card.heading}-${idx}`}
+              className="w-[290px] sm:w-[340px] md:w-[380px] shrink-0"
+            >
+              <Link
+                to={card.link || "/services/web-development"}
+                onClick={handleCardClick}
+                className="service-card sub-service-card relative bg-center bg-cover rounded-[20px] lg:rounded-[24px] flex justify-between flex-col overflow-hidden group h-[440px] md:h-[520px] lg:h-[580px] select-none cursor-pointer shadow-md block"
+                style={{ backgroundImage: `url(${card.image})` }}
+              >
+                {/* Top block spacer with explore arrow */}
+                <div className="top-block flex justify-end pt-[28px] pr-[28px] sm:pt-[32px] sm:pr-[32px]">
+                  <div className="flex size-10 md:size-11 items-center justify-center rounded-full bg-black/40 border border-white/20 text-white backdrop-blur-md transition-all duration-300 group-hover:bg-[#9AFD0D] group-hover:text-black group-hover:border-[#9AFD0D] group-hover:scale-105 shadow-sm">
+                    <ArrowUpRight className="size-4 md:size-5 stroke-[2.5]" />
                   </div>
                 </div>
 
-                <Link
-                  to={s.link}
-                  className="absolute inset-0 z-20 focus:outline-none focus:ring-2 focus:ring-[#9AFD0D] rounded-[inherit]"
-                  aria-label={s.title}
-                />
-              </article>
+                {/* Bottom expanding panel */}
+                <div className="botton-block relative z-10 p-[20px] sm:p-[24px] lg:p-[32px] block rounded-b-[20px] lg:rounded-b-[24px]">
+                  <h3
+                    className="text-[22px] md:text-[28px] lg:text-[32px] leading-[1.14] font-semibold text-white tracking-tight transform transition-transform duration-300 ease-out"
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                  >
+                    {card.heading}
+                  </h3>
+                  <div className="excerpt-content text-[#ededed] text-[14px] md:text-[15px] leading-[23px] font-normal">
+                    {card.description}
+                  </div>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
@@ -342,55 +414,59 @@ export function Services() {
   );
 }
 
-function LogoPill({ name, slug }: { name: string; slug: string }) {
-  return (
-    <span className="pill group flex shrink-0 items-center gap-2.5 border border-border bg-surface px-4 py-2.5 transition-colors hover:border-primary/50 hover:bg-surface-2 sm:gap-3 sm:px-7 sm:py-3">
-      <img
-        src={`https://cdn.simpleicons.org/${slug}/9ca3af`}
-        alt={`${name} logo`}
-        loading="lazy"
-        width={24}
-        height={24}
-        className="size-5 shrink-0 object-contain transition-opacity sm:size-6"
-        onError={(e) => {
-          e.currentTarget.style.display = "none";
-        }}
-      />
-      <span className="whitespace-nowrap text-sm font-medium tracking-tight text-muted-foreground transition-colors group-hover:text-foreground sm:text-lg">
-        {name}
-      </span>
-    </span>
-  );
-}
-
 export function ClientLogos() {
-  const row1 = clientLogos.slice(0, 15);
-  const row2 = clientLogos.slice(15);
+  const { brands } = siteData;
 
-  return (
-    <section className="border-t border-border py-14 sm:py-16">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <p className="eyebrow justify-center w-full text-center">
-          Brand Landscape · Not Client Endorsements
-        </p>
-      </div>
-      <div className="mt-8 space-y-4 sm:mt-10 sm:space-y-6">
-        {[row1, row2].map((row, idx) => (
-          <div key={idx} className="marquee-mask overflow-hidden">
-            <div
-              className={
-                idx % 2
-                  ? "flex w-max gap-3 animate-marquee-rev"
-                  : "flex w-max gap-3 animate-marquee"
-              }
-              style={{ ["--marquee-duration" as string]: idx % 2 ? "55s" : "45s" }}
-            >
-              {[...row, ...row].map((c, i) => (
-                <LogoPill key={`${c.name}-${i}`} name={c.name} slug={c.slug} />
-              ))}
-            </div>
+  const renderLogoGroup = (items: { title: string; url: string }[]) => {
+    // 4 repetitions guarantees completely seamless -50% marquee looping
+    const displayItems = [...items, ...items, ...items, ...items];
+
+    return (
+      <div className="flex items-center gap-8 sm:gap-14 md:gap-20 shrink-0 py-2">
+        {displayItems.map((item, idx) => (
+          <div
+            key={idx}
+            className="flex items-center justify-center shrink-0 w-[140px] sm:w-[170px] md:w-[200px] h-[54px] sm:h-[68px] md:h-[76px] px-3 sm:px-4 transition-all duration-300 opacity-80 hover:opacity-100 hover:scale-105"
+          >
+            <img
+              src={item.url}
+              alt={item.title}
+              className="max-h-[34px] sm:max-h-[42px] md:max-h-[48px] w-auto object-contain filter grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
+              loading="lazy"
+            />
           </div>
         ))}
+      </div>
+    );
+  };
+
+  return (
+    <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden relative border-y border-neutral-100">
+      {/* Left and right gradient fade masks */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 md:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 md:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-10" />
+
+      <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
+        {/* Row 1: Leftward Marquee */}
+        <div className="marquee-container">
+          <div className="marquee-track" style={{ animationDuration: "36s" }}>
+            {renderLogoGroup(brands.topRow)}
+          </div>
+        </div>
+
+        {/* Row 2: Rightward Marquee (Reverse) */}
+        <div className="marquee-container">
+          <div className="marquee-track reverse" style={{ animationDuration: "32s" }}>
+            {renderLogoGroup(brands.middleRow)}
+          </div>
+        </div>
+
+        {/* Row 3: Leftward Marquee */}
+        <div className="marquee-container">
+          <div className="marquee-track" style={{ animationDuration: "38s" }}>
+            {renderLogoGroup(brands.bottomRow)}
+          </div>
+        </div>
       </div>
     </section>
   );

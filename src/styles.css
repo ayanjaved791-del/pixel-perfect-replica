@@ -128,11 +128,15 @@
 @utility eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted-foreground);
+  gap: 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #6060603D;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  backdrop-filter: blur(12px);
 }
 
 @utility text-display {
@@ -851,6 +855,32 @@
   scrollbar-width: none;
 }
 
+/* Custom sleek scrollbar utility */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.22) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #9afd0d;
+}
+
 /* Six2Eight Sub-Service Card Animation */
 .service-card.sub-service-card {
   position: relative;
@@ -960,4 +990,44 @@
 }
 [data-overlay] {
   transition: opacity 0.3s ease;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes counter-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes cursor-bob {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+}
+
+.animate-orbit {
+  animation: orbit-spin 16s linear infinite;
+}
+
+.animate-counter-orbit {
+  animation: counter-orbit-spin 16s linear infinite;
+}
+
+.animate-cursor-bob {
+  animation: cursor-bob 3s ease-in-out infinite;
 }

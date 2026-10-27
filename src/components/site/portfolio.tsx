@@ -120,7 +120,12 @@ export function Portfolio() {
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <span className="eyebrow text-muted-foreground">Growth concepts</span>
+            <div className="mb-4">
+              <span className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-[#6060603D] px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
+                <span className="size-2.5 rounded-full bg-[#9AFD0D] shadow-[0_0_12px_#9AFD0D] animate-pulse" />
+                Growth concepts
+              </span>
+            </div>
             <h2 className="text-display mt-3 text-3xl sm:text-5xl">Digital growth portfolio</h2>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
               Concept projects exploring branding, digital experiences, acquisition, and automation.
