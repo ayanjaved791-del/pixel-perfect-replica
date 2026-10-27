@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-4 sm:top-6 z-50 px-4 pointer-events-none">
+      <header className="hidden lg:block fixed inset-x-0 top-4 sm:top-6 z-50 px-4 pointer-events-none">
         <div className="mx-auto flex h-14 sm:h-16 max-w-2xl items-center justify-between rounded-full bg-[#121212]/95 border border-white/10 px-4 sm:px-5 py-2 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] pointer-events-auto transition-all duration-300">
           {/* Exact Logo from Screenshot */}
           <a href="/#top" className="flex items-center shrink-0" aria-label="six2eight home">
@@ -22,7 +22,7 @@ export function Header() {
           </a>
 
           {/* Desktop Navigation Links matching Screenshot */}
-          <nav className="hidden items-center gap-5 md:flex">
+          <nav className="flex items-center gap-6">
             <ServicesDropdown />
             <a
               href="/#work"
@@ -35,12 +35,6 @@ export function Header() {
               className="text-[15px] font-medium text-[#E0E0E0] hover:text-white transition-colors"
             >
               About Us
-            </a>
-            <a
-              href="/#blog"
-              className="text-[15px] font-medium text-[#E0E0E0] hover:text-white transition-colors"
-            >
-              Blog
             </a>
           </nav>
 

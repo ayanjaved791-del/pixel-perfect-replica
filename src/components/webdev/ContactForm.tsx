@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { siteData } from "@/data/webdev/siteData";
-import { Star, CheckCircle, ArrowUpRight } from "lucide-react";
-import { GreenHerringboneBackground } from "./GreenHerringboneBackground";
+import { Star, CheckCircle, ChevronDown } from "lucide-react";
 
 export const ContactForm: React.FC = () => {
   const { contact } = siteData;
@@ -13,7 +12,27 @@ export const ContactForm: React.FC = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>(["Web Development"]);
   const [budget, setBudget] = useState("$1k to 10k");
   const [message, setMessage] = useState("");
+  const [helpDropdownOpen, setHelpDropdownOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setHelpDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setHelpDropdownOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -25,17 +44,17 @@ export const ContactForm: React.FC = () => {
   const currentT = contact.testimonials[activeTestimonial]!;
 
   const serviceOptions = [
-    "Branding & Strategy",
-    "UI/UX Experiences",
+    "UX UI Design",
     "Web Development",
-    "SEO & Organic Growth",
-    "Paid Advertising",
-    "Lead Generation",
+    "Web Design",
+    "WordPress Development",
+    "SaaS Web & Application Design",
+    "Branding & Strategy",
     "AI Automation & CRM",
     "E-commerce",
   ];
 
-  const budgetOptions = ["$1k to 10k", "$10k to 20k", "$20k to $50k", "$100k+"];
+  const budgetOptions = ["$1k to 10k", "$10k to 20k", "$20k to 50k", "$50k+"];
 
   const toggleService = (srv: string) => {
     if (selectedServices.includes(srv)) {
@@ -54,87 +73,58 @@ export const ContactForm: React.FC = () => {
   return (
     <section
       id="contact-us-form"
-      className="contact-forms relative z-10 px-[16px] lg:px-6 py-[64px] sm:py-[80px] lg:py-[120px] overflow-hidden bg-[#456828]"
+      className="contact-forms relative z-10 px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 bg-[#111113] overflow-visible"
     >
-      {/* Pure TSX & Canvas programmatic green herringbone tile background */}
-      <GreenHerringboneBackground />
-
-      {/* Subtle edge-fade overlay to seamlessly transition with adjacent dark sections */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-[#111111]/35 via-transparent to-[#111111]/45"
-        aria-hidden="true"
-      />
-
-      <div className="container relative z-10 mx-auto max-w-7xl">
-        <div className="flex flex-col lg:flex-row overflow-hidden rounded-[24px] lg:rounded-[32px] border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.65)] bg-[#141416]/95 backdrop-blur-md">
-          {/* Left Column: Testimonial Showcase (Desktop) */}
-          <div className="hidden lg:flex w-full lg:w-1/2 bg-white border-b lg:border-b-0 lg:border-r border-neutral-200/80 flex-col justify-between p-[36px] xl:p-[48px] min-h-[720px] text-neutral-900">
+      <div className="container relative z-10 mx-auto max-w-6xl">
+        <div className="bg-white rounded-[28px] sm:rounded-[36px] shadow-[0_24px_70px_rgba(0,0,0,0.45)] border border-neutral-200/90 overflow-visible grid grid-cols-1 lg:grid-cols-2">
+          {/* Left Column: Testimonial Showcase */}
+          <div className="p-8 sm:p-10 xl:p-12 flex flex-col justify-between min-h-[560px] lg:min-h-[640px] text-neutral-900 border-b lg:border-b-0 lg:border-r border-neutral-200/80">
             {/* Top Company Badge */}
-            <div className="flex items-center gap-3">
-              <div className="w-[52px] h-[52px] rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 border border-neutral-200/80 p-2 overflow-hidden">
-                <img
-                  src={currentT.avatar}
-                  alt={currentT.company}
-                  className="w-full h-full object-contain"
-                />
+            <div className="flex items-center gap-2.5">
+              <div
+                className="size-7 rounded-full bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-xs font-semibold"
+                style={{ color: currentT.color }}
+              >
+                {currentT.letter.toLowerCase()}
               </div>
-              <span className="text-[18px] font-semibold text-[#050414]">{currentT.company}</span>
+              <span className="text-xs sm:text-sm font-semibold text-neutral-800">
+                {currentT.company}
+              </span>
             </div>
 
             {/* Testimonial Quote */}
             <div className="my-auto py-8">
-              <div className="space-y-4">
-                <p
-                  className="text-[26px] xl:text-[32px] leading-[1.3] font-semibold text-[#050414]"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  "{currentT.quote}"
-                </p>
-                <p
-                  className="text-[16px] xl:text-[18px] leading-[28px] font-normal text-[#535862]"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {currentT.subquote}
-                </p>
-              </div>
+              <h3 className="text-2xl sm:text-3xl lg:text-[32px] leading-[1.25] font-bold text-neutral-950 tracking-tight">
+                {currentT.quote}
+              </h3>
+              <p className="text-sm text-neutral-500 leading-relaxed mt-4 max-w-md">
+                {currentT.subquote}
+              </p>
 
               {/* Author & Avatar */}
               <div className="flex items-center gap-3.5 mt-8">
-                <div className="w-[56px] h-[56px] rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-neutral-100">
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-neutral-200/80 p-1 shrink-0 bg-white shadow-sm flex items-center justify-center">
                   <img
                     src={currentT.avatar}
                     alt={currentT.company}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
-                <div>
-                  <p
-                    className="text-[18px] font-semibold text-[#050414]"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    {currentT.company}
-                  </p>
-                  <p
-                    className="text-sm text-neutral-500"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    Verified Client
-                  </p>
-                </div>
+                <span className="text-base sm:text-lg font-bold text-neutral-900">
+                  {currentT.company}
+                </span>
               </div>
             </div>
 
             {/* Bottom Rating & Progress Indicator */}
-            <div className="pt-6 border-t border-neutral-200">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} className="w-4 h-4 fill-[#FBBF24] text-[#FBBF24]" />
-                  ))}
-                </div>
+            <div className="pt-6">
+              <div className="flex items-center gap-1 mb-2">
+                {[...Array(5)].map((_, idx) => (
+                  <Star key={idx} className="size-3.5 fill-black text-black" />
+                ))}
               </div>
-              <p className="text-sm text-neutral-600 font-medium">
-                200+ happy Customers based on complement and customer reviews on Clutch
+              <p className="text-xs text-neutral-600 font-medium">
+                200+ happy Customers based on complement and customer reviews
               </p>
 
               {/* Progress bars */}
@@ -147,11 +137,13 @@ export const ContactForm: React.FC = () => {
                     className="h-1 flex-1 rounded-full bg-neutral-200 overflow-hidden cursor-pointer"
                     aria-label={`Go to slide ${idx + 1}`}
                   >
-                    {activeTestimonial === idx && (
+                    {activeTestimonial === idx ? (
                       <div
-                        className="h-full bg-[#87e00c] animate-[contactProgressGrow_linear_forwards]"
+                        className="h-full bg-[#87E00C] animate-[contactProgressGrow_linear_forwards]"
                         style={{ animationDuration: "5.5s" }}
                       />
+                    ) : (
+                      <div className="h-full bg-transparent" />
                     )}
                   </button>
                 ))}
@@ -160,50 +152,160 @@ export const ContactForm: React.FC = () => {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="w-full lg:w-1/2 bg-[#161618] flex flex-col justify-between p-[24px] sm:p-[36px] xl:p-[44px] min-h-[720px] text-white">
+          <div className="p-8 sm:p-10 xl:p-12 flex flex-col justify-between min-h-[560px] lg:min-h-[640px] text-neutral-900 relative">
             {isSubmitted ? (
               <div className="my-auto text-center py-12 px-4 animate-fadeIn">
-                <div className="w-16 h-16 bg-[#9AFD0D]/20 text-black rounded-full flex items-center justify-center mx-auto mb-6 border border-[#9AFD0D]/30">
-                  <CheckCircle className="w-10 h-10 text-[#9AFD0D]" />
+                <div className="w-16 h-16 bg-[#9AFD0D]/30 text-black rounded-full flex items-center justify-center mx-auto mb-5 border border-[#9AFD0D]">
+                  <CheckCircle className="w-9 h-9 text-neutral-900" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                  Thank You, {fullName}!
-                </h3>
-                <p className="text-neutral-400 max-w-md mx-auto mb-8">
-                  Your project details have been received. Our directors will review your growth
-                  challenge and get back to you within 24 hours.
+                <h3 className="text-2xl font-bold text-neutral-950 mb-2">Thank You, {fullName}!</h3>
+                <p className="text-neutral-500 text-sm max-w-sm mx-auto mb-6">
+                  Your project details have been received. We'll be in touch within 24 hours.
                 </p>
                 <button
                   type="button"
                   onClick={() => setIsSubmitted(false)}
-                  className="secondary-buttons button-slide cursor-pointer text-sm"
+                  className="px-6 py-2.5 rounded-full bg-black text-white text-xs font-semibold hover:bg-neutral-800 transition-colors cursor-pointer"
                 >
-                  <div className="button-text-wrapper">
-                    <span className="button-text">Send Another Message</span>
-                    <span className="button-text button-text-hover">Send Another Message</span>
-                  </div>
+                  Send Another Message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6 h-full justify-between">
-                <div className="space-y-6">
-                  {/* Name & Email Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-neutral-300 mb-2">
-                        Your name
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Your name"
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#202023] border border-[#333338] text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all text-sm sm:text-base"
-                      />
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5 h-full justify-between">
+                <div>
+                  {/* Top Badge */}
+                  <div className="inline-flex items-center gap-2 rounded-full bg-[#111111] text-white px-3.5 py-1.5 text-xs font-semibold w-fit mb-3">
+                    <span className="size-2 rounded-full bg-[#9AFD0D]" />
+                    <span>Get in Touch</span>
+                  </div>
+
+                  {/* Title & Subtitle */}
+                  <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-neutral-950 tracking-tight leading-tight">
+                    Let's Talk About Your Project
+                  </h2>
+                  <p className="text-xs sm:text-sm text-neutral-500 mt-2 mb-6 leading-relaxed">
+                    Tell us what you're building. We design and build high-quality digital products
+                    globally.
+                  </p>
+
+                  <div className="space-y-4">
+                    {/* Row 1: Name and Services Multi-select */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div>
+                        <label className="block text-xs font-medium text-neutral-700 mb-1.5">
+                          Hi, I'm
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="Your full name"
+                          className="w-full h-11 px-3.5 rounded-xl bg-[#F4F4F5] border-0 text-neutral-900 placeholder:text-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-all"
+                        />
+                      </div>
+
+                      <div className="relative" ref={dropdownRef}>
+                        <label className="block text-xs font-medium text-neutral-700 mb-1.5">
+                          I need help with
+                        </label>
+                        <div
+                          tabIndex={0}
+                          role="button"
+                          aria-expanded={helpDropdownOpen}
+                          aria-haspopup="listbox"
+                          onClick={() => setHelpDropdownOpen(!helpDropdownOpen)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setHelpDropdownOpen(!helpDropdownOpen);
+                            }
+                          }}
+                          className="w-full h-11 px-3 rounded-xl bg-[#F4F4F5] border-0 text-neutral-900 text-xs flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-neutral-900 select-none"
+                        >
+                          <div className="flex items-center gap-1.5 overflow-hidden max-w-[calc(100%-20px)]">
+                            {selectedServices.slice(0, 2).map((srv) => (
+                              <span
+                                key={srv}
+                                className="inline-flex items-center gap-1 bg-white border border-neutral-300 rounded-md px-2 py-0.5 text-[11px] font-medium text-neutral-800 shrink-0"
+                              >
+                                <span className="truncate max-w-[95px]">{srv}</span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleService(srv);
+                                  }}
+                                  className="text-neutral-400 hover:text-black cursor-pointer text-xs leading-none"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                            {selectedServices.length > 2 && (
+                              <span className="text-[11px] font-medium text-neutral-500 shrink-0">
+                                +{selectedServices.length - 2} more
+                              </span>
+                            )}
+                            {selectedServices.length === 0 && (
+                              <span className="text-neutral-400 text-xs px-1">
+                                Select services...
+                              </span>
+                            )}
+                          </div>
+                          <ChevronDown
+                            className={`size-4 text-neutral-600 shrink-0 transition-transform ${
+                              helpDropdownOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </div>
+
+                        {/* Dropdown Menu Modal */}
+                        {helpDropdownOpen && (
+                          <div className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-neutral-200 rounded-xl shadow-[0_16px_36px_rgba(0,0,0,0.18)] p-1.5 z-50 max-h-[260px] overflow-y-auto">
+                            {serviceOptions.map((srv) => {
+                              const isChecked = selectedServices.includes(srv);
+                              return (
+                                <div
+                                  key={srv}
+                                  onClick={() => toggleService(srv)}
+                                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-xs transition-colors mb-1 last:mb-0 select-none ${
+                                    isChecked
+                                      ? "bg-[#9AFD0D] text-black font-semibold"
+                                      : "bg-white text-neutral-700 hover:bg-neutral-100 font-medium"
+                                  }`}
+                                >
+                                  <div
+                                    className={`size-4 rounded flex items-center justify-center shrink-0 border transition-colors ${
+                                      isChecked
+                                        ? "bg-black border-black text-white"
+                                        : "border-neutral-400 bg-white"
+                                    }`}
+                                  >
+                                    {isChecked && (
+                                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                        <path
+                                          d="M1 4L3.5 6.5L9 1"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    )}
+                                  </div>
+                                  <span>{srv}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
                     </div>
+
+                    {/* Row 2: Email */}
                     <div>
-                      <label className="block text-sm font-medium text-neutral-300 mb-2">
+                      <label className="block text-xs font-medium text-neutral-700 mb-1.5">
                         Email
                       </label>
                       <input
@@ -212,86 +314,59 @@ export const ContactForm: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@company.com"
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#202023] border border-[#333338] text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all text-sm sm:text-base"
+                        className="w-full h-11 px-3.5 rounded-xl bg-[#F4F4F5] border-0 text-neutral-900 placeholder:text-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-all"
+                      />
+                    </div>
+
+                    {/* Row 3: Budget range */}
+                    <div>
+                      <label className="block text-xs font-medium text-neutral-700 mb-2">
+                        Budget range
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {budgetOptions.map((b) => {
+                          const isSelected = budget === b;
+                          return (
+                            <button
+                              key={b}
+                              type="button"
+                              onClick={() => setBudget(b)}
+                              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer border ${
+                                isSelected
+                                  ? "bg-black text-white border-black font-semibold shadow-sm"
+                                  : "bg-white text-neutral-800 border-neutral-300 hover:border-neutral-500"
+                              }`}
+                            >
+                              {b}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Row 4: Additional info? */}
+                    <div>
+                      <label className="block text-xs font-medium text-neutral-700 mb-1.5">
+                        Additional info?
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Goals, scope, timeline, or helpful links"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F4F5] border-0 text-neutral-900 placeholder:text-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-all resize-none min-h-[90px]"
                       />
                     </div>
                   </div>
-
-                  {/* I need help with */}
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-neutral-300 mb-3">
-                      I need help with
-                    </label>
-                    <div className="flex flex-wrap gap-3 sm:gap-3.5">
-                      {serviceOptions.map((srv) => {
-                        const isSelected = selectedServices.includes(srv);
-                        return (
-                          <button
-                            key={srv}
-                            type="button"
-                            onClick={() => toggleService(srv)}
-                            className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all cursor-pointer border ${
-                              isSelected
-                                ? "bg-white text-black border-white font-semibold shadow-sm scale-[1.02]"
-                                : "bg-[#202023] text-neutral-300 border-[#333338] hover:text-white hover:border-neutral-500 hover:bg-[#26262a]"
-                            }`}
-                          >
-                            {srv}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Budget range */}
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-neutral-300 mb-3">
-                      Budget range
-                    </label>
-                    <div className="flex flex-wrap gap-3 sm:gap-3.5">
-                      {budgetOptions.map((b) => {
-                        const isSelected = budget === b;
-                        return (
-                          <button
-                            key={b}
-                            type="button"
-                            onClick={() => setBudget(b)}
-                            className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all cursor-pointer border ${
-                              isSelected
-                                ? "bg-[#9AFD0D] text-black border-[#9AFD0D] font-semibold shadow-sm scale-[1.02]"
-                                : "bg-[#202023] text-neutral-300 border-[#333338] hover:text-white hover:border-neutral-500 hover:bg-[#26262a]"
-                            }`}
-                          >
-                            {b}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Your growth challenge */}
-                  <div>
-                    <label className="block text-sm sm:text-base font-medium text-neutral-300 mb-2">
-                      Your growth challenge
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Tell us about your business, goals, and challenges..."
-                      className="w-full px-4 py-3.5 rounded-2xl bg-[#202023] border border-[#333338] text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all text-sm sm:text-base resize-y min-h-[110px]"
-                    />
-                  </div>
                 </div>
 
-                {/* Submit Button: Start a Project ↗ */}
+                {/* Row 5: Submit button */}
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full bg-[#9AFD0D] text-[#070707] font-semibold text-base sm:text-lg py-4 rounded-full flex items-center justify-center gap-2 hover:bg-[#aefe2b] hover:shadow-[0_0_24px_rgba(154,253,13,0.35)] transition-all cursor-pointer"
+                    className="w-full bg-[#9AFD0D] hover:bg-[#8ee80c] active:scale-[0.99] text-black font-bold text-sm sm:text-base py-3.5 rounded-full transition-all cursor-pointer shadow-[0_6px_20px_rgba(154,253,13,0.35)]"
                   >
-                    <span>Start a Project</span>
-                    <ArrowUpRight className="w-5 h-5 stroke-[2.5]" />
+                    Get in Touch
                   </button>
                 </div>
               </form>

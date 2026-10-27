@@ -202,7 +202,7 @@ export function MobileBottomBar() {
             <button
               type="button"
               onClick={() => handleNav("home", "/#top")}
-              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group"
+              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
@@ -239,7 +239,7 @@ export function MobileBottomBar() {
             <button
               type="button"
               onClick={() => handleNav("services", "/#services")}
-              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group"
+              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
@@ -291,7 +291,7 @@ export function MobileBottomBar() {
             <button
               type="button"
               onClick={() => handleNav("work", "/#work")}
-              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group"
+              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
@@ -330,7 +330,7 @@ export function MobileBottomBar() {
             <button
               type="button"
               onClick={() => setMoreOpen(true)}
-              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group"
+              className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
