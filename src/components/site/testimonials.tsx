@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, TrendingUp, User } from "lucide-react";
 import { CALENDLY } from "@/data/site";
 
 const clientTestimonials = [
@@ -278,7 +278,7 @@ export function Strategy() {
             {/* Graphic: Glowing Box with Cursor pointing to Projects pill & orbiting sphere */}
             <div className="relative my-7 flex h-36 w-full items-center justify-center">
               {/* Orbiting sphere */}
-              <div className="absolute right-10 top-2 size-12 rounded-full bg-gradient-to-br from-neutral-700 to-neutral-900 border border-white/10 shadow-lg opacity-80" />
+              <div className="absolute right-10 top-2 size-12 rounded-full bg-gradient-to-br from-neutral-700 to-neutral-900 border border-white/10 shadow-lg opacity-80 animate-float-reverse" />
               {/* Dashed trajectory curve */}
               <svg
                 className="absolute inset-0 size-full overflow-visible opacity-30"
@@ -287,21 +287,22 @@ export function Strategy() {
                 <path
                   d="M 20 100 Q 100 20 180 80"
                   stroke="#9AFD0D"
-                  strokeWidth="1"
+                  strokeWidth="1.5"
                   fill="none"
-                  strokeDasharray="3 3"
+                  strokeDasharray="4 4"
+                  className="animate-dash-crawl"
                 />
               </svg>
               {/* Projects tag pill with green cursor */}
-              <div className="relative flex items-center gap-2 rounded-xl border border-[#9AFD0D]/60 bg-[#161616] px-4 py-2.5 backdrop-blur-md shadow-[0_0_25px_rgba(154,253,13,0.2)]">
+              <div className="relative flex items-center gap-2 rounded-xl border border-[#9AFD0D]/60 bg-[#161616] px-4 py-2.5 backdrop-blur-md shadow-[0_0_25px_rgba(154,253,13,0.2)] animate-float-gentle">
                 <svg
-                  className="size-4 text-[#9AFD0D] fill-[#9AFD0D] drop-shadow-[0_0_6px_#9AFD0D]"
+                  className="size-4 text-[#9AFD0D] fill-[#9AFD0D] drop-shadow-[0_0_6px_#9AFD0D] animate-cursor-move"
                   viewBox="0 0 24 24"
                 >
                   <path d="M4 0l16 12-7 2-4 7z" />
                 </svg>
                 <span className="text-xs font-semibold text-white tracking-wide">Projects</span>
-                <span className="size-2 rounded-full bg-[#9AFD0D]" />
+                <span className="size-2 rounded-full bg-[#9AFD0D] animate-pulse" />
               </div>
             </div>
 
@@ -352,7 +353,7 @@ export function Strategy() {
               </div>
 
               {/* Center Green Globe */}
-              <div className="relative flex size-12 items-center justify-center rounded-full bg-[#9AFD0D] text-black shadow-[0_0_35px_#9AFD0D] z-10 transition-transform duration-300 hover:scale-110">
+              <div className="relative flex size-12 items-center justify-center rounded-full bg-[#9AFD0D] text-black shadow-[0_0_35px_#9AFD0D] z-10 transition-transform duration-300 hover:scale-110 animate-pulse">
                 <svg
                   className="size-7 stroke-[1.8]"
                   viewBox="0 0 24 24"
@@ -385,14 +386,14 @@ export function Strategy() {
             <div className="relative my-7 flex h-36 w-full items-center justify-center">
               <div className="relative w-48 rounded-t-xl rounded-b-md border border-white/15 bg-neutral-900 p-2 shadow-2xl">
                 <div className="flex h-20 w-full items-center justify-center rounded-lg bg-black/80 border border-white/5 p-2">
-                  <div className="flex items-center gap-2 rounded-full border border-white/15 bg-neutral-800/90 px-3 py-1.5 shadow-md">
-                    <div className="flex size-5 items-center justify-center rounded-full bg-neutral-700 text-[10px] text-white font-bold">
-                      👤
+                  <div className="flex items-center gap-2 rounded-full border border-white/15 bg-neutral-800/90 px-3 py-1.5 shadow-md animate-float">
+                    <div className="flex size-5 items-center justify-center rounded-full bg-neutral-700 text-white font-bold animate-icon-sway">
+                      <User className="size-3 text-neutral-300" />
                     </div>
-                    <div className="flex items-center gap-0.5 text-amber-400 text-xs">
+                    <div className="flex items-center gap-0.5 text-amber-400 text-xs animate-star-shimmer">
                       {"★★★★★"}
                     </div>
-                    <span className="size-1.5 rounded-full bg-[#9AFD0D]" />
+                    <span className="size-1.5 rounded-full bg-[#9AFD0D] animate-pulse" />
                   </div>
                 </div>
                 <div className="mt-1 h-1.5 w-full rounded-b-md bg-neutral-700 mx-auto" />
@@ -423,21 +424,24 @@ export function Strategy() {
                   stroke="white"
                   strokeWidth="1"
                   fill="none"
-                  strokeDasharray="2 2"
+                  strokeDasharray="3 3"
+                  className="animate-dash-crawl"
                 />
                 <path
                   d="M 100 30 L 100 110"
                   stroke="#9AFD0D"
-                  strokeWidth="1"
+                  strokeWidth="1.5"
                   fill="none"
-                  strokeDasharray="2 2"
+                  strokeDasharray="4 4"
+                  className="animate-dash-crawl"
                 />
                 <path
                   d="M 150 40 Q 100 80 100 110"
                   stroke="white"
                   strokeWidth="1"
                   fill="none"
-                  strokeDasharray="2 2"
+                  strokeDasharray="3 3"
+                  className="animate-dash-crawl"
                 />
                 <ellipse
                   cx="100"
@@ -448,12 +452,14 @@ export function Strategy() {
                   strokeWidth="1"
                   fill="none"
                   opacity="0.6"
+                  className="animate-pulse"
                 />
               </svg>
               <div className="relative flex w-44 justify-between items-center z-10">
-                <div className="flex size-9 items-center justify-center rounded-full border border-white/20 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_12px_rgba(154,253,13,0.3)]">
+                {/* Cloud / SaaS badge */}
+                <div className="flex size-9 items-center justify-center rounded-full border border-white/20 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_12px_rgba(154,253,13,0.3)] animate-float hover:scale-110 transition-transform">
                   <svg
-                    className="size-4"
+                    className="size-4 animate-icon-sway"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -462,9 +468,10 @@ export function Strategy() {
                     <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" />
                   </svg>
                 </div>
-                <div className="flex size-11 -translate-y-2 items-center justify-center rounded-full border border-[#9AFD0D]/60 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_16px_rgba(154,253,13,0.45)]">
+                {/* Shopping cart / E-commerce badge */}
+                <div className="flex size-11 -translate-y-2 items-center justify-center rounded-full border border-[#9AFD0D]/60 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_16px_rgba(154,253,13,0.45)] animate-float-fast hover:scale-110 transition-transform">
                   <svg
-                    className="size-5"
+                    className="size-5 animate-badge-pop"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -473,9 +480,10 @@ export function Strategy() {
                     <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <div className="flex size-9 items-center justify-center rounded-full border border-white/20 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_12px_rgba(154,253,13,0.3)]">
+                {/* Star / Premium badge */}
+                <div className="flex size-9 items-center justify-center rounded-full border border-white/20 bg-neutral-900 text-[#9AFD0D] shadow-[0_0_12px_rgba(154,253,13,0.3)] animate-float-delayed hover:scale-110 transition-transform">
                   <svg
-                    className="size-4"
+                    className="size-4 animate-star-shimmer"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -507,9 +515,9 @@ export function Strategy() {
             <div className="relative my-7 flex h-36 w-full items-center justify-center">
               <div className="relative w-48 rounded-xl border border-white/15 bg-neutral-900 p-2.5 shadow-2xl">
                 <div className="flex h-16 w-full items-center justify-between rounded-lg bg-black/80 border border-white/5 px-3">
-                  <div className="flex size-8 items-center justify-center rounded-lg bg-[#9AFD0D]/10 border border-[#9AFD0D]/30 text-[#9AFD0D]">
+                  <div className="flex size-8 items-center justify-center rounded-lg bg-[#9AFD0D]/10 border border-[#9AFD0D]/30 text-[#9AFD0D] animate-float-gentle">
                     <svg
-                      className="size-4"
+                      className="size-4 animate-icon-sway"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"
@@ -519,7 +527,7 @@ export function Strategy() {
                       <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
                     </svg>
                   </div>
-                  <div className="flex items-center gap-1 rounded-md bg-[#9AFD0D] px-2 py-0.5 text-xs font-extrabold text-black shadow-[0_0_10px_#9AFD0D]">
+                  <div className="flex items-center gap-1 rounded-md bg-[#9AFD0D] px-2 py-0.5 text-xs font-extrabold text-black shadow-[0_0_10px_#9AFD0D] animate-badge-pop">
                     <span>A+</span>
                   </div>
                 </div>
@@ -546,15 +554,15 @@ export function Strategy() {
             {/* Graphic: 3 Stacked Cards with Checkmark & Growth Tag */}
             <div className="relative my-7 flex h-36 w-full items-center justify-center">
               <div className="relative flex flex-col items-center gap-2">
-                <div className="h-5 w-40 rounded-lg border border-white/10 bg-neutral-900/60 opacity-60" />
-                <div className="flex h-8 w-44 items-center justify-between rounded-lg border border-white/20 bg-neutral-900 px-3 shadow-lg">
+                <div className="h-5 w-40 rounded-lg border border-white/10 bg-neutral-900/60 opacity-60 animate-float-reverse" />
+                <div className="flex h-8 w-44 items-center justify-between rounded-lg border border-white/20 bg-neutral-900 px-3 shadow-lg animate-float-gentle">
                   <div className="h-2 w-16 rounded-full bg-white/20" />
-                  <span className="flex size-4 items-center justify-center rounded-full bg-[#9AFD0D] text-[10px] font-bold text-black">
+                  <span className="flex size-4 items-center justify-center rounded-full bg-[#9AFD0D] text-[10px] font-bold text-black animate-badge-pop">
                     ✓
                   </span>
                 </div>
-                <div className="flex items-center gap-2 rounded-full border border-[#9AFD0D]/40 bg-black/90 px-3.5 py-1.5 shadow-[0_0_15px_rgba(154,253,13,0.2)]">
-                  <span className="text-xs font-bold text-[#9AFD0D]">📈</span>
+                <div className="flex items-center gap-2 rounded-full border border-[#9AFD0D]/40 bg-black/90 px-3.5 py-1.5 shadow-[0_0_15px_rgba(154,253,13,0.2)] animate-float">
+                  <TrendingUp className="size-3.5 text-[#9AFD0D] animate-icon-sway" />
                   <span className="text-xs font-semibold text-white">Revenue Growth</span>
                 </div>
               </div>

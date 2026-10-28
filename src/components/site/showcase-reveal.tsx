@@ -47,7 +47,7 @@ export function ShowcaseReveal() {
 
         // On mobile / small screens, disable scroll morphing animation completely
         // Both the showcase card video and headline pill video remain static in place
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 1024) {
           floating.style.display = "none";
           largeWrapper.style.opacity = "1";
           if (pillVideo) {
@@ -182,10 +182,10 @@ export function ShowcaseReveal() {
         </div>
       </div>
 
-      {/* Floating Morphing Video: purely updated via requestAnimationFrame directly on DOM style */}
+      {/* Floating Morphing Video: only active on lg+ desktops, completely hidden on mobile/small screens */}
       <div
         ref={floatingRef}
-        className="fixed z-40 overflow-hidden border border-white/20 bg-black shadow-[0_16px_50px_rgba(0,0,0,0.8)] pointer-events-none will-change-[left,top,width,height,border-radius]"
+        className="hidden lg:block fixed z-40 overflow-hidden border border-white/20 bg-black shadow-[0_16px_50px_rgba(0,0,0,0.8)] pointer-events-none will-change-[left,top,width,height,border-radius]"
         style={{ display: "none" }}
       >
         <video

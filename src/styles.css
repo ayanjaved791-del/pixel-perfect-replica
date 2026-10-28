@@ -1108,6 +1108,93 @@
   }
 }
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes float-reverse {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-1.5deg);
+  }
+}
+
+@keyframes badge-pop {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(154, 253, 13, 0.4);
+  }
+  50% {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 0 20px rgba(154, 253, 13, 0.8);
+  }
+}
+
+@keyframes dash-crawl {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes cursor-move {
+  0%,
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  40% {
+    transform: translate(3px, -5px) rotate(-5deg);
+  }
+  75% {
+    transform: translate(-2px, 2px) rotate(2deg);
+  }
+}
+
+@keyframes icon-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  33% {
+    transform: rotate(-6deg);
+  }
+  66% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes star-shimmer {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.85));
+  }
+}
+
 .animate-orbit {
   animation: orbit-spin 16s linear infinite;
 }
@@ -1119,3 +1206,44 @@
 .animate-cursor-bob {
   animation: cursor-bob 3s ease-in-out infinite;
 }
+
+.animate-float {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float 2.4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 3.5s ease-in-out 0.8s infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 3s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.animate-badge-pop {
+  animation: badge-pop 2.5s ease-in-out infinite;
+}
+
+.animate-dash-crawl {
+  animation: dash-crawl 1.8s linear infinite;
+}
+
+.animate-cursor-move {
+  animation: cursor-move 2.8s ease-in-out infinite;
+}
+
+.animate-icon-sway {
+  animation: icon-sway 3.2s ease-in-out infinite;
+}
+
+.animate-star-shimmer {
+  animation: star-shimmer 2s ease-in-out infinite;
+}
+

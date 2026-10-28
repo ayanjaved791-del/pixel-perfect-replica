@@ -104,55 +104,93 @@ export const featuredServices: FeaturedService[] = [
     image: "https://cms.six2eight.com/wp-content/uploads/2025/06/sass-web-application.webp",
     link: "/services/web-development",
   },
+  {
+    title: "Digital Marketing & Advertisement",
+    badge: "Advertisement",
+    category: "Advertisement",
+    tags: ["Digital Marketing", "Paid Search & Social", "SEO & Growth", "Performance PPC"],
+    copy: "Accelerate revenue with multi-channel digital marketing, high-intent search campaigns, and conversion-optimized performance advertising.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/frontend-development.webp",
+    link: "/services/web-development",
+  },
 ];
 
 export const subServicesCardsList: SubServiceCardItem[] = [
-  ...siteData.subservices.cards.map((c) => ({
-    heading: c.heading,
-    description: c.description,
-    image: c.image,
-    link: "/services/web-development",
-  })),
   {
-    heading: "UI & UX Design",
+    heading: "UI & UX Design Services",
     description:
       "A great product starts with understanding the user. We design clean, intuitive interfaces that make every interaction feel effortless and purposeful.",
     image: "https://cms.six2eight.com/wp-content/uploads/2025/06/ui-ux-service.webp",
     link: "/services/web-development",
   },
   {
-    heading: "Mobile App Design",
+    heading: "Web Design Services",
+    description:
+      "Modern, responsive websites engineered with bespoke visuals, intuitive layouts, and compelling user journeys that convert visitors into customers.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/frontend-development.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Mobile App Design Services",
     description:
       "Design intuitive, engaging mobile experiences that delight users and drive retention across iOS and Android devices.",
     image: "https://cms.six2eight.com/wp-content/uploads/2025/06/mobile-app.webp",
     link: "/services/web-development",
   },
   {
-    heading: "Webflow Development",
+    heading: "Branding Identity and Design Services",
     description:
-      "Clean, responsive Webflow builds engineered for performance, marketing independence, and rapid iteration.",
-    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/webflow-development.webp",
+      "Craft iconic brand identities, packaging, typography, and cohesive design systems that make your business instantly recognizable.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/12/brand-identity-hero.webp",
     link: "/services/web-development",
   },
   {
-    heading: "Shopify Development",
+    heading: "Digital Marketing Services",
+    description:
+      "Data-driven digital marketing campaigns, high-ROI paid media, and omnichannel performance funnels engineered to scale revenue and customer acquisition.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/mobile-app.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Web Development Services",
+    description:
+      "Your website should work flawlessly on any device and load in seconds. We build fast, secure, and scalable sites that perform as good as they look.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/web-developement.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "WordPress Development Services",
+    description:
+      "Your WordPress site should do more than just look good. High-speed, SEO-friendly custom WordPress themes and architectures that drive results.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/02/wordpress-service-cards.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Shopify Development Services",
     description:
       "Turn your storefront into a clear path to purchase, with thoughtful product pages, high-converting checkout, and connected shopping experiences.",
     image: "https://cms.six2eight.com/wp-content/uploads/2025/06/shopify-development.webp",
     link: "/services/web-development",
   },
   {
-    heading: "Brand Identity Systems",
+    heading: "Webflow Development Services",
     description:
-      "Craft iconic brand identities, packaging, and cohesive design systems that make your business instantly recognizable.",
-    image: "https://cms.six2eight.com/wp-content/uploads/2025/12/brand-identity-hero.webp",
+      "Clean, responsive Webflow builds engineered for performance, marketing independence, pixel-perfection, and rapid iteration.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/webflow-development.webp",
     link: "/services/web-development",
   },
   {
-    heading: "WordPress Development",
+    heading: "SaaS & Web Application Design",
     description:
-      "High-speed, SEO-friendly WordPress websites with custom functionality and headless architecture that drives results.",
-    image: "https://cms.six2eight.com/wp-content/uploads/2025/02/wordpress-service-cards.webp",
+      "Enterprise-grade web application and SaaS interfaces built for power users with intuitive navigation and uncompromising polish.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/06/sass-web-application.webp",
+    link: "/services/web-development",
+  },
+  {
+    heading: "Motion Graphics Design",
+    description:
+      "Captivate your audience with dynamic motion design, 3D graphics, and micro-interactions that bring your brand and product to life.",
+    image: "https://cms.six2eight.com/wp-content/uploads/2025/02/motion-graphic.png",
     link: "/services/web-development",
   },
 ];

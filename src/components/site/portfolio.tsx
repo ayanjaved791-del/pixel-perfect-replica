@@ -27,7 +27,14 @@ const BENTO_SPANS = [
   "lg:col-span-2", // 7
 ];
 
-function ProjectCard({ p, large }: { p: Project; large?: boolean }) {
+function ProjectCard({ p, large, index }: { p: Project; large?: boolean; index?: number }) {
+  const numberText =
+    p.metric && p.metric !== "—"
+      ? p.metric
+      : typeof index === "number"
+        ? String(index + 1).padStart(2, "0")
+        : "01";
+
   return (
     <article
       className={cn(
@@ -84,11 +91,13 @@ function ProjectCard({ p, large }: { p: Project; large?: boolean }) {
           </h3>
           <div className="shrink-0 text-right">
             <div className="text-display text-2xl leading-none text-primary transition-transform duration-500 group-hover:scale-110 sm:text-3xl">
-              {p.metric}
+              {numberText}
             </div>
-            <div className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground sm:text-[11px]">
-              {p.metricLabel}
-            </div>
+            {p.metricLabel && (
+              <div className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground sm:text-[11px]">
+                {p.metricLabel}
+              </div>
+            )}
           </div>
         </div>
 
@@ -171,7 +180,7 @@ export function Portfolio() {
                 delay={(i % 3) * 90}
                 className={cn("h-full", span)}
               >
-                <ProjectCard p={p} large={large} />
+                <ProjectCard p={p} large={large} index={i} />
               </Reveal>
             );
           })}

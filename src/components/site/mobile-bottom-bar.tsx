@@ -1,20 +1,94 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Calendar, Mail, Phone, ExternalLink, X, ChevronRight } from "lucide-react";
-import { CALENDLY, services } from "@/data/site";
-import { serviceHref, cn } from "@/lib/utils";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
+import { Calendar, Mail, Phone, X, ChevronRight, ArrowUpRight, ArrowRight } from "lucide-react";
+import { CALENDLY } from "@/data/site";
+import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
+
+type MobileServiceItem = {
+  title: string;
+  subtitle: string;
+  icon: string;
+  href: string;
+};
+
+const mobileDesignServices: MobileServiceItem[] = [
+  {
+    title: "UI & UX Design Services",
+    subtitle: "Web & Mobile app design",
+    icon: "/assets/dropdown/ui-ux-design.svg",
+    href: "/#services",
+  },
+  {
+    title: "Web Design Services",
+    subtitle: "Modern websites that convert",
+    icon: "/assets/dropdown/web-design.svg",
+    href: "/#services",
+  },
+  {
+    title: "Mobile App Design Services",
+    subtitle: "Seamless iOS & Android design",
+    icon: "/assets/dropdown/mobile-app.svg",
+    href: "/#services",
+  },
+  {
+    title: "Branding & Identity Services",
+    subtitle: "Identity that stands out",
+    icon: "/assets/dropdown/branding.svg",
+    href: "/#services",
+  },
+];
+
+const mobileDevServices: MobileServiceItem[] = [
+  {
+    title: "Web Development Services",
+    subtitle: "Built for speed & growth",
+    icon: "/assets/dropdown/web-development.svg",
+    href: "/services/web-development",
+  },
+  {
+    title: "WordPress Development Services",
+    subtitle: "Easy to manage & scale",
+    icon: "/assets/dropdown/wordpress-1.svg",
+    href: "/#services",
+  },
+  {
+    title: "Shopify Development Services",
+    subtitle: "Sell more with Shopify",
+    icon: "/assets/dropdown/shopify-1.svg",
+    href: "/#services",
+  },
+];
+
+const mobileAdServices: MobileServiceItem[] = [
+  {
+    title: "Digital Marketing Services",
+    subtitle: "Data-driven campaigns that scale",
+    icon: "/assets/dropdown/digital-marketing.svg",
+    href: "/#services",
+  },
+  {
+    title: "Paid Search & Social Ads",
+    subtitle: "High-ROI Google & Meta ads",
+    icon: "/assets/dropdown/paid-ads.svg",
+    href: "/#services",
+  },
+  {
+    title: "SEO & Growth Marketing",
+    subtitle: "Organic search ranking & authority",
+    icon: "/assets/dropdown/seo-marketing.svg",
+    href: "/#services",
+  },
+  {
+    title: "Content & Influencer Marketing",
+    subtitle: "Attract, engage & retain buyers",
+    icon: "/assets/dropdown/content-marketing.svg",
+    href: "/#services",
+  },
+];
 
 export function MobileBottomBar() {
-  const [activeTab, setActiveTab] = useState<"home" | "services" | "work" | "more">("home");
+  const [activeTab, setActiveTab] = useState<"home" | "services" | "work" | "about">("home");
   const [contactOpen, setContactOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
   // Update active tab based on scroll position or pathname
@@ -24,7 +98,7 @@ export function MobileBottomBar() {
       const hash = window.location.hash;
 
       if (path === "/about") {
-        setActiveTab("more");
+        setActiveTab("about");
         return;
       }
       if (path.startsWith("/services")) {
@@ -76,8 +150,28 @@ export function MobileBottomBar() {
     };
   }, []);
 
-  const handleNav = (target: "home" | "services" | "work", href: string) => {
+  // Lock body scroll and handle Escape key when Services drawer is open
+  useEffect(() => {
+    if (servicesOpen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setServicesOpen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [servicesOpen]);
+
+  const handleNav = (target: "home" | "services" | "work" | "about", href: string) => {
     setActiveTab(target);
+    setServicesOpen(false);
     const path = window.location.pathname;
 
     if (target === "home") {
@@ -90,12 +184,7 @@ export function MobileBottomBar() {
     }
 
     if (target === "services") {
-      const el = document.getElementById("services");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        window.location.href = "/#services";
-      }
+      setServicesOpen((prev) => !prev);
       return;
     }
 
@@ -108,9 +197,54 @@ export function MobileBottomBar() {
       }
       return;
     }
+
+    if (target === "about") {
+      if (path === "/about") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.location.href = "/about";
+      }
+      return;
+    }
+  };
+
+  const handleServicesTabClick = () => {
+    setContactOpen(false);
+    setServicesOpen((prev) => !prev);
+    setActiveTab("services");
+  };
+
+  const handleServiceSelect = (href: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setServicesOpen(false);
+    setActiveTab("services");
+
+    if (href === "/services/web-development") {
+      if (window.location.pathname === "/services/web-development") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.location.href = "/services/web-development";
+      }
+      return;
+    }
+
+    if (href === "/#services") {
+      if (window.location.pathname === "/") {
+        const el = document.getElementById("services");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        window.location.href = "/#services";
+      }
+      return;
+    }
+
+    window.location.href = href;
   };
 
   const handleChatFab = () => {
+    setServicesOpen(false);
     const contactEl = document.getElementById("contact");
     if (contactEl) {
       contactEl.scrollIntoView({ behavior: "smooth" });
@@ -238,13 +372,13 @@ export function MobileBottomBar() {
             {/* 2. Services Button */}
             <button
               type="button"
-              onClick={() => handleNav("services", "/#services")}
+              onClick={handleServicesTabClick}
               className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
                   "flex items-center justify-center transition-transform group-active:scale-90",
-                  activeTab === "services"
+                  activeTab === "services" || servicesOpen
                     ? "text-[#9AFD0D]"
                     : "text-[#9ca3af] group-hover:text-white",
                 )}
@@ -277,7 +411,9 @@ export function MobileBottomBar() {
               <span
                 className={cn(
                   "text-[11px] font-medium tracking-tight mt-0.5",
-                  activeTab === "services" ? "text-[#9AFD0D] font-semibold" : "text-[#9ca3af]",
+                  activeTab === "services" || servicesOpen
+                    ? "text-[#9AFD0D] font-semibold"
+                    : "text-[#9ca3af]",
                 )}
               >
                 Services
@@ -326,171 +462,164 @@ export function MobileBottomBar() {
               </span>
             </button>
 
-            {/* 4. More Button */}
+            {/* 4. About Us Button */}
             <button
               type="button"
-              onClick={() => setMoreOpen(true)}
+              onClick={() => handleNav("about", "/about")}
               className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div
                 className={cn(
                   "flex items-center justify-center transition-transform group-active:scale-90",
-                  activeTab === "more" ? "text-[#9AFD0D]" : "text-[#9ca3af] group-hover:text-white",
+                  activeTab === "about"
+                    ? "text-[#9AFD0D]"
+                    : "text-[#9ca3af] group-hover:text-white",
                 )}
               >
-                {/* Staggered 3 horizontal bars matching image */}
+                {/* User / profile icon */}
                 <svg
                   width="22"
                   height="22"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.2"
+                  strokeWidth="2"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <line x1="8" y1="7" x2="20" y2="7" />
-                  <line x1="4" y1="12" x2="20" y2="12" />
-                  <line x1="11" y1="17" x2="20" y2="17" />
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
                 </svg>
               </div>
               <span
                 className={cn(
                   "text-[11px] font-medium tracking-tight mt-0.5",
-                  activeTab === "more" ? "text-[#9AFD0D] font-semibold" : "text-[#9ca3af]",
+                  activeTab === "about" ? "text-[#9AFD0D] font-semibold" : "text-[#9ca3af]",
                 )}
               >
-                More
+                About Us
               </span>
             </button>
           </div>
         </div>
       </nav>
 
-      {/* "More" Slide-up Drawer */}
-      <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
-        <SheetContent
-          side="bottom"
-          className="bg-[#0f0f10] border-t border-white/10 text-white rounded-t-[28px] p-6 pb-10 max-h-[85vh] overflow-y-auto"
-        >
-          <SheetHeader className="text-left pb-4 border-b border-white/10">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-                six<span className="text-[#9AFD0D]">2</span>eight
-                <span className="inline-block size-1.5 rounded-full bg-[#9AFD0D]" />
-              </SheetTitle>
-              <SheetClose className="size-8 rounded-full bg-white/10 flex items-center justify-center text-neutral-300 hover:text-white">
-                <X className="size-4" />
-              </SheetClose>
-            </div>
-            <p className="text-xs text-neutral-400 mt-1">Full-Service Digital Growth Agency</p>
-          </SheetHeader>
+      {/* Services Drawer Backdrop */}
+      {servicesOpen && (
+        <div
+          aria-hidden="true"
+          onClick={() => setServicesOpen(false)}
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] transition-opacity lg:hidden"
+        />
+      )}
 
-          {/* Quick Nav Links */}
-          <div className="grid grid-cols-1 gap-2 pt-4">
-            <a
-              href="/#top"
-              onClick={() => setMoreOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <span className="text-sm font-medium">Home</span>
-              <ChevronRight className="size-4 text-neutral-500" />
-            </a>
+      {/* Services Drawer Sheet matching uploaded screenshot */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Services Navigation"
+        className={cn(
+          "fixed inset-x-0 bottom-0 mx-auto w-full max-w-lg z-40 max-h-[85vh] bg-white rounded-t-[30px] flex flex-col shadow-[0_-16px_50px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out will-change-transform lg:hidden",
+          servicesOpen ? "translate-y-0" : "translate-y-full pointer-events-none",
+        )}
+      >
+        {/* Top Centered Gray Pill Drag Handle */}
+        <div className="pt-3 pb-2 flex justify-center shrink-0">
+          <div className="w-12 h-1 bg-[#D1D5DB] rounded-full" />
+        </div>
 
-            <div className="rounded-xl bg-white/5 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setServicesOpen(!servicesOpen)}
-                className="w-full flex items-center justify-between p-3.5 hover:bg-white/10 transition-colors text-left"
+        {/* Scrollable Content Container */}
+        <div className="overflow-y-auto px-3 pt-1 pb-28 overscroll-contain flex-1">
+          {/* Section 1: Design Services */}
+          <div className="mb-2 px-4 py-2.5 rounded-2xl bg-[#FAF7FE]">
+            <h3 className="text-[17px] font-bold text-gray-950 tracking-tight">Design Services</h3>
+          </div>
+
+          <div className="divide-y divide-gray-100 mb-4">
+            {mobileDesignServices.map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                onClick={(e) => handleServiceSelect(item.href, e)}
+                className="flex items-center justify-between px-3.5 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors w-full text-left group cursor-pointer"
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Services</span>
-                  <span className="text-[10px] font-semibold uppercase bg-[#9AFD0D]/15 text-[#9AFD0D] px-2 py-0.5 rounded-full">
-                    {services.length} Specialities
-                  </span>
+                <div className="flex items-center gap-3.5 min-w-0 flex-1 pr-3">
+                  <div className="size-10 sm:size-11 rounded-full bg-black flex items-center justify-center shrink-0 shadow-sm">
+                    <img src={item.icon} alt="" className="size-5 object-contain" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[14.5px] font-bold text-gray-950 leading-snug">
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-gray-500 font-normal mt-0.5">{item.subtitle}</div>
+                  </div>
                 </div>
-                <ChevronRight
-                  className={cn(
-                    "size-4 text-neutral-500 transition-transform duration-200",
-                    servicesOpen && "rotate-90",
-                  )}
-                />
-              </button>
-
-              {servicesOpen && (
-                <div className="border-t border-white/5 bg-black/40 px-3 py-2 space-y-1">
-                  <a
-                    href="/services/web-development"
-                    onClick={() => setMoreOpen(false)}
-                    className="flex items-center justify-between p-2.5 rounded-lg text-sm text-[#9AFD0D] hover:bg-white/5 font-medium"
-                  >
-                    <span>Web Development (Featured)</span>
-                    <ArrowUpRight className="size-3.5 text-[#9AFD0D]" />
-                  </a>
-                  {services.map((s) => (
-                    <a
-                      key={s.title}
-                      href={serviceHref(s.title)}
-                      onClick={() => setMoreOpen(false)}
-                      className="block p-2 text-xs text-neutral-300 hover:text-white hover:bg-white/5 rounded-md"
-                    >
-                      {s.title}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <a
-              href="/#work"
-              onClick={() => setMoreOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <span className="text-sm font-medium">Selected Work</span>
-              <ChevronRight className="size-4 text-neutral-500" />
-            </a>
-
-            <a
-              href="/about"
-              onClick={() => setMoreOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <span className="text-sm font-medium">About six2eight</span>
-              <ChevronRight className="size-4 text-neutral-500" />
-            </a>
-
-            <a
-              href="/#process"
-              onClick={() => setMoreOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <span className="text-sm font-medium">Our Process</span>
-              <ChevronRight className="size-4 text-neutral-500" />
-            </a>
-
-            <a
-              href="/#faq"
-              onClick={() => setMoreOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              <span className="text-sm font-medium">FAQs</span>
-              <ChevronRight className="size-4 text-neutral-500" />
-            </a>
+                <ArrowRight className="size-4.5 text-gray-900 shrink-0 transition-transform group-hover:translate-x-0.5" />
+              </a>
+            ))}
           </div>
 
-          {/* Primary Action Button */}
-          <div className="pt-6">
-            <a
-              href={CALENDLY}
-              target="_blank"
-              rel="noreferrer"
-              className="pill w-full flex items-center justify-center gap-2 bg-[#9AFD0D] text-black py-3.5 px-6 font-semibold text-sm transition-transform active:scale-[0.98] shadow-[0_0_24px_rgba(154,253,13,0.35)]"
-            >
-              Start a Project
-              <ArrowUpRight className="size-4" />
-            </a>
+          {/* Section 2: Development Services */}
+          <div className="mt-4 mb-2 px-4 py-2.5 rounded-2xl bg-[#FFF6F0]">
+            <h3 className="text-[17px] font-bold text-gray-950 tracking-tight">
+              Development Services
+            </h3>
           </div>
-        </SheetContent>
-      </Sheet>
+
+          <div className="divide-y divide-gray-100 mb-4">
+            {mobileDevServices.map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                onClick={(e) => handleServiceSelect(item.href, e)}
+                className="flex items-center justify-between px-3.5 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors w-full text-left group cursor-pointer"
+              >
+                <div className="flex items-center gap-3.5 min-w-0 flex-1 pr-3">
+                  <div className="size-10 sm:size-11 rounded-full bg-black flex items-center justify-center shrink-0 shadow-sm">
+                    <img src={item.icon} alt="" className="size-5 object-contain" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[14.5px] font-bold text-gray-950 leading-snug">
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-gray-500 font-normal mt-0.5">{item.subtitle}</div>
+                  </div>
+                </div>
+                <ArrowRight className="size-4.5 text-gray-900 shrink-0 transition-transform group-hover:translate-x-0.5" />
+              </a>
+            ))}
+          </div>
+
+          {/* Section 3: Advertisement */}
+          <div className="mt-4 mb-2 px-4 py-2.5 rounded-2xl bg-[#F0FDF4]">
+            <h3 className="text-[17px] font-bold text-gray-950 tracking-tight">Advertisement</h3>
+          </div>
+
+          <div className="divide-y divide-gray-100">
+            {mobileAdServices.map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                onClick={(e) => handleServiceSelect(item.href, e)}
+                className="flex items-center justify-between px-3.5 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors w-full text-left group cursor-pointer"
+              >
+                <div className="flex items-center gap-3.5 min-w-0 flex-1 pr-3">
+                  <div className="size-10 sm:size-11 rounded-full bg-black flex items-center justify-center shrink-0 shadow-sm">
+                    <img src={item.icon} alt="" className="size-5 object-contain" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[14.5px] font-bold text-gray-950 leading-snug">
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-gray-500 font-normal mt-0.5">{item.subtitle}</div>
+                  </div>
+                </div>
+                <ArrowRight className="size-4.5 text-gray-900 shrink-0 transition-transform group-hover:translate-x-0.5" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Direct Contact Dialog if not on a page with #contact */}
       <Sheet open={contactOpen} onOpenChange={setContactOpen}>

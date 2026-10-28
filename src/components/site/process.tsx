@@ -2,12 +2,315 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { CALENDLY } from "@/data/site";
 
+// Official real vector SVGs for all apps
+function TeamsLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <circle cx="16.5" cy="7.5" r="2.5" fill="#7B83EB" />
+      <path
+        d="M19.5 11h-4a1 1 0 00-1 1v4a3 3 0 003 3h1a3 3 0 003-3v-3a2 2 0 00-2-2z"
+        fill="#7B83EB"
+      />
+      <circle cx="9" cy="6.5" r="3" fill="#FFFFFF" />
+      <path
+        d="M3 13.5C3 11.01 5.01 9 7.5 9h3c2.49 0 4.5 2.01 4.5 4.5V17a2 2 0 01-2 2H5a2 2 0 01-2-2v-3.5z"
+        fill="#FFFFFF"
+      />
+      <path d="M7 11.5h4v1.5H9.75v4H8.25v-4H7v-1.5z" fill="#4B53BC" />
+    </svg>
+  );
+}
+
+function ZoomLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3.5 7A2.5 2.5 0 001 9.5v5A2.5 2.5 0 003.5 17h9a2.5 2.5 0 002.5-2.5v-1.2l4.8 2.88A1 1 0 0021 15.32V8.68a1 1 0 00-1.2-.86L15 10.7V9.5A2.5 2.5 0 0012.5 7h-9z" />
+    </svg>
+  );
+}
+
+function MeetLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path d="M4 7a2 2 0 012-2h6a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" fill="#00832d" />
+      <path d="M14 10l5-3.5a1 1 0 011.5.85v9.3a1 1 0 01-1.5.85L14 14v-4z" fill="#00ac47" />
+      <path d="M4 14.5v2.5a2 2 0 002 2h6v-4.5H4z" fill="#ffba00" />
+      <path d="M4 7a2 2 0 012-2h6v4.5H4V7z" fill="#ea4335" />
+      <path d="M14 6.5l5.5 3.5v-3.5L14 6.5z" fill="#0066da" />
+    </svg>
+  );
+}
+
+function CalLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="4" width="18" height="17" rx="3" fill="#FFFFFF" />
+      <path d="M3 8h18V6a2 2 0 00-2-2H5a2 2 0 00-2 2v2z" fill="#4285F4" />
+      <rect x="7" y="2" width="2" height="3.5" rx="0.5" fill="#1967D2" />
+      <rect x="15" y="2" width="2" height="3.5" rx="0.5" fill="#1967D2" />
+      <text
+        x="12"
+        y="16.5"
+        textAnchor="middle"
+        fontSize="7.5"
+        fontWeight="800"
+        fill="#1A73E8"
+        fontFamily="system-ui, -apple-system, sans-serif"
+      >
+        31
+      </text>
+    </svg>
+  );
+}
+
+function NotionLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4.46 4.21c.75.6 1.03.56 2.43.46l11.44-.84c1.12-.09 1.3-.46 1.03-1.02-.28-.47-.84-.65-1.68-.61l-12 .84c-.94.1-1.5.56-1.22 1.17zm1.12 3.17v12.42c0 .93.47 1.3 1.49 1.21l13.03-.93c1.03-.1 1.3-.75 1.3-1.68V6.07c0-.84-.37-1.21-1.21-1.12l-13.4 1.03c-.84.09-1.22.56-1.22 1.4zm12.65.56c.1.56 0 1.12-.46 1.21l-1.31.28v8.69c0 .84-.47 1.02-1.12.93-.66-.09-1.03-.65-1.5-1.3l-4.1-6.73v6.63l1.77.38c.47.09.56.65.47 1.03-.1.37-.47.46-1.12.46l-3.36.19c-.47 0-.75-.37-.66-.84.1-.47.47-.65 1.03-.75l1.3-.28V9.16l-1.4-.19c-.46-.09-.56-.65-.46-1.03.09-.37.46-.46 1.02-.46l3.65-.28 4.38 6.81V8.41l-1.39-.28c-.47-.1-.56-.66-.47-1.03.1-.37.47-.47 1.03-.47l2.99-.19c.46 0 .84.38.84.84z" />
+    </svg>
+  );
+}
+
+function MiroLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="#050038">
+      <path d="M19.467 2.333L14.733 10.4l3.467 11.267L24 4.8 19.467 2.333zM9.733 2.333L5 10.4l3.467 11.267 5.8-16.867L9.733 2.333zM0 2.333L4.2 10.4 0 21.667l4.533-9.6L0 2.333z" />
+    </svg>
+  );
+}
+
+function TypeformLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3.5 7h17v3.2h-6.9v9.8H10.4V10.2H3.5V7z" />
+    </svg>
+  );
+}
+
+function AnalyticsLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <rect x="4" y="13" width="3.5" height="7" rx="1.75" fill="#F9AB00" />
+      <rect x="10.25" y="8" width="3.5" height="12" rx="1.75" fill="#E37400" />
+      <rect x="16.5" y="4" width="3.5" height="16" rx="1.75" fill="#E37400" />
+      <circle cx="18.25" cy="5.5" r="1.75" fill="#F9AB00" />
+    </svg>
+  );
+}
+
+function FigmaLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path d="M8 24c2.208 0 4-1.792 4-4v-4H8c-2.208 0-4 1.792-4 4s1.792 4 4 4z" fill="#0ACF83" />
+      <path d="M4 12c0-2.208 1.792-4 4-4h4v8H8c-2.208 0-4-1.792-4-4z" fill="#A259FF" />
+      <path d="M4 4c0-2.208 1.792-4 4-4h4v8H8C5.792 8 4 6.208 4 4z" fill="#F24E1E" />
+      <path d="M12 0h4c2.208 0 4 1.792 4 4s-1.792 4-4 4h-4V0z" fill="#FF7262" />
+      <path d="M20 12c0 2.208-1.792 4-4 4s-4-1.792-4-4 1.792-4 4-4 4 1.792 4 4z" fill="#1ABCFE" />
+    </svg>
+  );
+}
+
+function PrincipleLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M7 6h6a4 4 0 010 8H7V6zm0 8h4"
+        stroke="white"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function FramerLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4 2h16v7h-8zM4 9h8l8 7H4zM4 16h8v6z" />
+    </svg>
+  );
+}
+
+function TokensLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+    </svg>
+  );
+}
+
+function ReactLogo() {
+  return (
+    <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="#61DAFB" strokeWidth="1.6">
+      <ellipse cx="12" cy="12" rx="10" ry="4" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+      <circle cx="12" cy="12" r="1.8" fill="#61DAFB" stroke="none" />
+    </svg>
+  );
+}
+
+function NextLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10.5" fill="#000000" stroke="#444444" strokeWidth="1" />
+      <path d="M8.5 7.5v9h1.8V10.2l6.2 6.3h1.5V7.5h-1.8v6.2l-6-6.2H8.5z" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+function TsLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="white">
+      <path
+        d="M11 15.5v-1.8H9.3v-5h3.6V7.2H7.5v1.5h1.8v5H11zm5.2.2c1 0 1.8-.4 2.3-1l-1-1c-.3.4-.7.6-1.3.6-.7 0-1.1-.3-1.1-.8 0-.5.4-.8 1.4-1.1 1.6-.5 2.2-1.1 2.2-2.2 0-1.3-1-2.2-2.6-2.2-.9 0-1.7.3-2.3.8l.9 1.1c.4-.3.9-.5 1.4-.5.7 0 1.1.3 1.1.8 0 .5-.4.8-1.3 1.1-1.6.5-2.3 1.2-2.3 2.3 0 1.3 1.1 2.2 2.7 2.2z"
+        fill="#FFFFFF"
+      />
+    </svg>
+  );
+}
+
+function TailwindLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="#38BDF8">
+      <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z" />
+    </svg>
+  );
+}
+
+function CypressLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M16 8.5A5.5 5.5 0 1016 15.5"
+        stroke="#22D3EE"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function LighthouseLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2l3 5h-6l3-5z" fill="#FFA100" />
+      <path d="M7 7l2 14h6l2-14H7z" fill="#F44B21" />
+      <circle cx="12" cy="10" r="2" fill="#FFFFFF" />
+      <path d="M4 10.5l3-1v2l-3-1zm16 0l-3-1v2l3-1z" fill="#FFA100" />
+    </svg>
+  );
+}
+
+function SentryLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13.2 2.1c-.6-.4-1.4-.4-2 0L3.5 7.1C3 7.5 2.6 8.2 2.6 9v6c0 .8.4 1.5.9 1.9l7.7 5c.6.4 1.4.4 2 0l7.7-5c.6-.4.9-1.1.9-1.9V9c0-.8-.4-1.5-.9-1.9L13.2 2.1zM12 6.2l5.5 3.6-2.3 3.6-3.2-2.1v6.5h-2V11.3l-3.2 2.1-2.3-3.6L12 6.2z" />
+    </svg>
+  );
+}
+
+function VitestLogo() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none">
+      <path d="M18.8 4L12 19.5 5.2 4h4.4l2.4 6 2.4-6h4.4z" fill="#FCC72B" />
+      <path d="M13.2 4l-4.5 10.2L12 17l4.5-9.2H13.2z" fill="#729B1B" />
+    </svg>
+  );
+}
+
+function CloudflareLogo() {
+  return (
+    <svg className="size-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.5 14.5c.2-.5.3-1 .3-1.6 0-2.3-1.8-4.2-4.1-4.2-.6 0-1.1.1-1.6.4C13.2 6.4 10.9 4.5 8.2 4.5c-3.4 0-6.1 2.7-6.1 6.1 0 .6.1 1.2.3 1.8C1 13 0 14.3 0 15.8 0 17.8 1.6 19.5 3.7 19.5h15.6c2.6 0 4.7-2.1 4.7-4.7 0-2.1-1.4-3.9-3.4-4.5l-1.1.2z" />
+    </svg>
+  );
+}
+
+function VercelLogo() {
+  return (
+    <svg className="size-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2L24 22H0L12 2z" />
+    </svg>
+  );
+}
+
+function SslLogo() {
+  return (
+    <svg
+      className="size-3.5 text-white"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="4" y="11" width="16" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0110 0v4" />
+    </svg>
+  );
+}
+
+function renderAppLogo(name: string) {
+  switch (name) {
+    case "Teams":
+      return <TeamsLogo />;
+    case "Zoom":
+      return <ZoomLogo />;
+    case "Meet":
+      return <MeetLogo />;
+    case "Cal":
+      return <CalLogo />;
+    case "Notion":
+      return <NotionLogo />;
+    case "Miro":
+      return <MiroLogo />;
+    case "Typeform":
+      return <TypeformLogo />;
+    case "Analytics":
+      return <AnalyticsLogo />;
+    case "Figma":
+      return <FigmaLogo />;
+    case "Principle":
+      return <PrincipleLogo />;
+    case "Framer":
+      return <FramerLogo />;
+    case "Tokens":
+      return <TokensLogo />;
+    case "React":
+      return <ReactLogo />;
+    case "Next.js":
+      return <NextLogo />;
+    case "TypeScript":
+      return <TsLogo />;
+    case "Tailwind":
+      return <TailwindLogo />;
+    case "Cypress":
+      return <CypressLogo />;
+    case "Lighthouse":
+      return <LighthouseLogo />;
+    case "Sentry":
+      return <SentryLogo />;
+    case "Vitest":
+      return <VitestLogo />;
+    case "Cloudflare":
+      return <CloudflareLogo />;
+    case "Vercel":
+      return <VercelLogo />;
+    case "SSL":
+      return <SslLogo />;
+    default:
+      return <span className="text-xs font-bold">{name[0]}</span>;
+  }
+}
+
 type ProcessTab = {
   name: string;
   color: string;
   title: string;
   subtitle: string;
-  apps: { name: string; bg: string; icon: string }[];
+  apps: { name: string; bg: string }[];
   cursors: { name: string; color: string; pos: string; delay?: string }[];
   photos: string[];
 };
@@ -19,10 +322,10 @@ const processTabs: ProcessTab[] = [
     title: "Kickoff & project discovery",
     subtitle: "Understanding the business, users, and goals before a single pixel is designed.",
     apps: [
-      { name: "Teams", bg: "#4B53BC", icon: "💬" },
-      { name: "Zoom", bg: "#2D8CFF", icon: "Z" },
-      { name: "Meet", bg: "#00897B", icon: "📹" },
-      { name: "Cal", bg: "#4285F4", icon: "31" },
+      { name: "Teams", bg: "#4B53BC" },
+      { name: "Zoom", bg: "#2D8CFF" },
+      { name: "Meet", bg: "#00897B" },
+      { name: "Cal", bg: "#4285F4" },
     ],
     cursors: [
       { name: "Jahid", color: "#3B82F6", pos: "bottom-14 left-1/4", delay: "0s" },
@@ -42,10 +345,10 @@ const processTabs: ProcessTab[] = [
     title: "User & market intelligence",
     subtitle: "Deep dive into user pain points, competitor benchmarks, and product positioning.",
     apps: [
-      { name: "Notion", bg: "#000000", icon: "N" },
-      { name: "Miro", bg: "#FFD02F", icon: "M" },
-      { name: "Typeform", bg: "#262627", icon: "T" },
-      { name: "Analytics", bg: "#E37400", icon: "📊" },
+      { name: "Notion", bg: "#000000" },
+      { name: "Miro", bg: "#FFD02F" },
+      { name: "Typeform", bg: "#262627" },
+      { name: "Analytics", bg: "#E37400" },
     ],
     cursors: [
       { name: "Persona", color: "#FACC15", pos: "top-8 left-1/4", delay: "0s" },
@@ -63,10 +366,10 @@ const processTabs: ProcessTab[] = [
     title: "Wireframes & design system",
     subtitle: "Crafting intuitive flows, pixel-perfect UI components, and interactive prototypes.",
     apps: [
-      { name: "Figma", bg: "#000000", icon: "❖" },
-      { name: "Principle", bg: "#6366F1", icon: "P" },
-      { name: "Framer", bg: "#0055FF", icon: "F" },
-      { name: "Tokens", bg: "#10B981", icon: "◆" },
+      { name: "Figma", bg: "#000000" },
+      { name: "Principle", bg: "#6366F1" },
+      { name: "Framer", bg: "#0055FF" },
+      { name: "Tokens", bg: "#10B981" },
     ],
     cursors: [
       { name: "Auto-layout", color: "#06B6D4", pos: "top-10 left-1/4", delay: "0.1s" },
@@ -84,10 +387,10 @@ const processTabs: ProcessTab[] = [
     title: "Scalable full-stack builds",
     subtitle: "Engineering fast, modern web applications with clean code, React, and robust APIs.",
     apps: [
-      { name: "React", bg: "#23272F", icon: "⚛" },
-      { name: "Next.js", bg: "#000000", icon: "▲" },
-      { name: "TypeScript", bg: "#3178C6", icon: "TS" },
-      { name: "Tailwind", bg: "#0F172A", icon: "🌊" },
+      { name: "React", bg: "#23272F" },
+      { name: "Next.js", bg: "#000000" },
+      { name: "TypeScript", bg: "#3178C6" },
+      { name: "Tailwind", bg: "#0F172A" },
     ],
     cursors: [
       { name: "PR Approved", color: "#10B981", pos: "top-8 left-1/3", delay: "0.2s" },
@@ -106,10 +409,10 @@ const processTabs: ProcessTab[] = [
     subtitle:
       "Rigorous device testing, edge case checks, accessibility compliance, and zero regressions.",
     apps: [
-      { name: "Cypress", bg: "#1B1E2E", icon: "C" },
-      { name: "Lighthouse", bg: "#FF4E42", icon: "100" },
-      { name: "Sentry", bg: "#362D59", icon: "🛡" },
-      { name: "Vitest", bg: "#729B1A", icon: "⚡" },
+      { name: "Cypress", bg: "#1B1E2E" },
+      { name: "Lighthouse", bg: "#FF4E42" },
+      { name: "Sentry", bg: "#362D59" },
+      { name: "Vitest", bg: "#729B1A" },
     ],
     cursors: [
       { name: "0 Errors", color: "#10B981", pos: "top-10 left-1/4", delay: "0s" },
@@ -127,10 +430,10 @@ const processTabs: ProcessTab[] = [
     subtitle:
       "Smooth zero-downtime production deployment, domain routing, and ongoing optimization.",
     apps: [
-      { name: "Cloudflare", bg: "#F38020", icon: "☁" },
-      { name: "Vercel", bg: "#000000", icon: "▲" },
-      { name: "Analytics", bg: "#EA4335", icon: "📈" },
-      { name: "SSL", bg: "#10B981", icon: "🔒" },
+      { name: "Cloudflare", bg: "#F38020" },
+      { name: "Vercel", bg: "#000000" },
+      { name: "Analytics", bg: "#EA4335" },
+      { name: "SSL", bg: "#10B981" },
     ],
     cursors: [
       { name: "Live 🚀", color: "#10B981", pos: "top-12 left-1/3", delay: "0.3s" },
@@ -220,11 +523,11 @@ export function Process() {
                     {currentTab.apps.map((app) => (
                       <div
                         key={app.name}
-                        className="flex size-7 sm:size-8 items-center justify-center rounded-lg text-white font-bold text-xs shadow-md border border-white/20"
+                        className="group/badge relative flex size-7 sm:size-8 items-center justify-center rounded-lg text-white font-bold text-xs shadow-md border border-white/30 transition-all duration-200 hover:scale-110 hover:shadow-lg overflow-hidden cursor-pointer"
                         style={{ backgroundColor: app.bg }}
                         title={app.name}
                       >
-                        {app.icon}
+                        {renderAppLogo(app.name)}
                       </div>
                     ))}
                   </div>

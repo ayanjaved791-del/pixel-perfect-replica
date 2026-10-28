@@ -205,8 +205,8 @@ export const projects: Project[] = [
     tools: ["Figma", "Webflow"],
     categories: ["Web Applications", "Web Development"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "01",
+    metricLabel: "Project",
     featured: true,
   },
   {
@@ -216,8 +216,8 @@ export const projects: Project[] = [
     tools: ["Figma"],
     categories: ["Web Development", "Digital Marketing"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "02",
+    metricLabel: "Project",
   },
   {
     name: "Sereni Mind",
@@ -226,8 +226,8 @@ export const projects: Project[] = [
     tools: ["Figma"],
     categories: ["Web Applications", "AI Automation"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "03",
+    metricLabel: "Project",
   },
   {
     name: "Webtool",
@@ -236,8 +236,8 @@ export const projects: Project[] = [
     tools: ["Figma"],
     categories: ["AI Automation", "Web Applications", "Web Development"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "04",
+    metricLabel: "Project",
   },
   {
     name: "Elora",
@@ -246,8 +246,8 @@ export const projects: Project[] = [
     tools: ["Figma"],
     categories: ["Branding", "E-commerce"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "05",
+    metricLabel: "Project",
   },
   {
     name: "Aura AI",
@@ -256,8 +256,8 @@ export const projects: Project[] = [
     tools: ["Figma"],
     categories: ["AI Automation", "Web Applications"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "06",
+    metricLabel: "Project",
     featured: true,
   },
   {
@@ -267,8 +267,8 @@ export const projects: Project[] = [
     tools: ["Shopify", "Figma"],
     categories: ["E-commerce", "Web Development", "Branding"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "07",
+    metricLabel: "Project",
   },
   {
     name: "Loopframe",
@@ -277,8 +277,8 @@ export const projects: Project[] = [
     tools: ["After Effects", "Figma"],
     categories: ["Digital Marketing", "Branding", "Web Applications"],
     year: "Concept",
-    metric: "—",
-    metricLabel: "Concept project",
+    metric: "08",
+    metricLabel: "Project",
   },
 ];
 
