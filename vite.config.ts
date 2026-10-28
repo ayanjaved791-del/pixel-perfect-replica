@@ -13,12 +13,32 @@ export default defineConfig({
     client: { entry: "client" },
     server: { entry: "server" },
   },
+  nitro: {
+    rollupConfig: {
+      onwarn(warning, defaultHandler) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        defaultHandler(warning);
+      },
+    },
+  },
   vite: {
     server: {
       host: "0.0.0.0",
       port: 3000,
       strictPort: true,
       allowedHosts: true,
+    },
+    build: {
+      rollupOptions: {
+        onwarn(warning, defaultHandler) {
+          if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+            return;
+          }
+          defaultHandler(warning);
+        },
+      },
     },
   },
 });
