@@ -66,111 +66,111 @@ export const siteData = {
     topRow: [
       {
         title: "1 BLANQS",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/1-BLANQS.webp",
+        url: "/assets/brands/1-BLANQS.webp",
       },
       {
         title: "2 Crecer",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/2-Crecer.webp",
+        url: "/assets/brands/2-Crecer.webp",
       },
       {
         title: "3 Berlitz",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/3-Berlitz.webp",
+        url: "/assets/brands/3-Berlitz.webp",
       },
       {
         title: "4 Fortified Roofing",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/4-Fortified-Roofing.webp",
+        url: "/assets/brands/4-Fortified-Roofing.webp",
       },
       {
         title: "Tele Training",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/Tele-Training.webp",
+        url: "/assets/brands/Tele-Training.webp",
       },
       {
         title: "17 Ace",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/17-Ace.webp",
+        url: "/assets/brands/17-Ace.webp",
       },
       {
         title: "9 Elba Hope",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/9-Elba-Hope.webp",
+        url: "/assets/brands/9-Elba-Hope.webp",
       },
       {
         title: "fiction profits",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/fiction-profits.webp",
+        url: "/assets/brands/fiction-profits.webp",
       },
     ],
     middleRow: [
       {
         title: "10 Crocs",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/10-Crocs.webp",
+        url: "/assets/brands/10-Crocs.webp",
       },
       {
         title: "11 Valid Traders",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/11-Valid-Traders.webp",
+        url: "/assets/brands/11-Valid-Traders.webp",
       },
       {
         title: "12 Leading Leads",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/12-Leading-Leads.webp",
+        url: "/assets/brands/12-Leading-Leads.webp",
       },
       {
         title: "Gun Made",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/Gun-Made.webp",
+        url: "/assets/brands/Gun-Made.webp",
       },
       {
         title: "14 Microsoft",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/14-Microsoft.webp",
+        url: "/assets/brands/14-Microsoft.webp",
       },
       {
         title: "eCom Triage",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/eCom-Triage.webp",
+        url: "/assets/brands/eCom-Triage.webp",
       },
       {
         title: "16 Review Inc",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/16-Review-Inc.webp",
+        url: "/assets/brands/16-Review-Inc.webp",
       },
       {
         title: "escapelux black",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/escapelux-black.webp",
+        url: "/assets/brands/escapelux-black.webp",
       },
       {
         title: "18 Power Synch",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/18-Power-Synch.webp",
+        url: "/assets/brands/18-Power-Synch.webp",
       },
     ],
     bottomRow: [
       {
         title: "19 JYD",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/19-JYD.webp",
+        url: "/assets/brands/19-JYD.webp",
       },
       {
         title: "28 Squire",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/28-Squire.webp",
+        url: "/assets/brands/28-Squire.webp",
       },
       {
         title: "Qore Logiq",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/Qore-Logiq.webp",
+        url: "/assets/brands/Qore-Logiq.webp",
       },
       {
         title: "20 Romulus",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/20-Romulus.webp",
+        url: "/assets/brands/20-Romulus.webp",
       },
       {
         title: "Mars Blue",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/02/Mars-Blue.webp",
+        url: "/assets/brands/Mars-Blue.webp",
       },
       {
         title: "21 Confiz",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/21-Confiz.webp",
+        url: "/assets/brands/21-Confiz.webp",
       },
       {
         title: "25 Amplifire",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/25-Amplifire.webp",
+        url: "/assets/brands/25-Amplifire.webp",
       },
       {
         title: "23 LHANEL",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/23-LHANEL.webp",
+        url: "/assets/brands/23-LHANEL.webp",
       },
       {
         title: "29 Cenerio AI",
-        url: "https://cms.six2eight.com/wp-content/uploads/2025/12/29-Cenerio-AI.webp",
+        url: "/assets/brands/29-Cenerio-AI.webp",
       },
     ],
   },

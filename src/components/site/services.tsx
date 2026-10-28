@@ -295,19 +295,27 @@ export function Services() {
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               <span>We help </span>
-              {/* Looping Eye Video Pill inside headline */}
+              {/* Showreel Video Pill inside headline matching reference animation */}
               <span
                 data-showreel-target
-                className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-1 h-[36px] w-[86px] sm:h-[46px] sm:w-[110px] lg:h-[58px] lg:w-[134px] overflow-hidden rounded-full border border-white/20 bg-black shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] relative shrink-0"
+                onClick={() => {
+                  const showcase = document.getElementById("showcase-reveal-section");
+                  if (showcase) {
+                    showcase.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                title="Click to view full showreel"
+                className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-1 h-[36px] w-[86px] sm:h-[46px] sm:w-[110px] lg:h-[58px] lg:w-[134px] overflow-hidden rounded-full border border-white/20 bg-black shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] relative shrink-0 cursor-pointer group"
               >
                 <video
-                  src="/eye-loop.mp4"
+                  data-pill-video
+                  src="/showreel.mp4"
+                  poster="/showreel-poster.jpg"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="size-full object-cover scale-110 pointer-events-none transition-opacity duration-300"
-                  style={{ opacity: "var(--eye, 1)" }}
+                  className="size-full object-cover scale-110 pointer-events-none transition-transform duration-300 group-hover:scale-125"
                 />
               </span>
               <span>you design</span>
@@ -431,8 +439,8 @@ export function ClientLogos() {
             <img
               src={item.url}
               alt={item.title}
-              className="max-h-[34px] sm:max-h-[42px] md:max-h-[48px] w-auto object-contain filter grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
-              loading="lazy"
+              className="max-h-[34px] sm:max-h-[42px] md:max-h-[48px] w-auto object-contain filter grayscale contrast-125 hover:grayscale-0 transition-all duration-300 block"
+              decoding="async"
             />
           </div>
         ))}
