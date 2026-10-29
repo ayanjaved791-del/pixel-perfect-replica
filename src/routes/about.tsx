@@ -6,17 +6,23 @@ import {
   Zap,
   TrendingUp,
   Handshake,
-  Quote,
   Linkedin,
   Facebook,
+  Globe2,
+  Trophy,
+  Users2,
+  Clock,
 } from "lucide-react";
 import founderAsset from "@/assets/founder.png.asset.json";
 import team from "@/assets/team.jpg.asset.json";
+import { Preloader } from "@/components/site/preloader";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { Reveal } from "@/components/site/reveal";
 import { CountUp } from "@/components/site/count-up";
 import { Magnetic } from "@/components/site/magnetic";
+import { LazyImage } from "@/components/site/lazy-image";
+import { ReviewCarousel } from "@/components/site/review-carousel";
 import { CALENDLY } from "@/data/site";
 
 const title = "About Us — six2eight Digital Growth Agency";
@@ -74,11 +80,6 @@ const approach = [
   [TrendingUp, "Built to grow", "Systems and code that scale as your business does."],
   [Handshake, "Shared wins", "We measure success by your metrics, not our portfolio."],
 ] as const;
-const quotes = [
-  ["Haven Health", "They turned a messy workflow into something our team actually enjoys using."],
-  ["Loop Labs", "Clear communication, no surprises, and a launch that landed on time."],
-  ["Tidewater", "It felt like working with our own team — just faster and sharper."],
-];
 const words = ["Strategy", "Design", "Technology", "Marketing", "Automation", "Growth"];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -87,14 +88,14 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
     const r = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
     const y = (e.clientY - r.top) / r.height - 0.5;
-    setT(`perspective(900px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-4px)`);
+    setT(`perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) translateY(-2px)`);
   };
   return (
     <div
       onMouseMove={onMove}
       onMouseLeave={() => setT("")}
       style={{ transform: t }}
-      className={`border-glow rounded-3xl bg-card transition-transform duration-300 ease-out ${className}`}
+      className={`rounded-3xl border border-border/70 bg-card transition-all duration-300 ease-out hover:border-border hover:shadow-lg ${className}`}
     >
       {children}
     </div>
@@ -104,49 +105,70 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function About() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <Preloader />
       <Header />
-      <main>
+      <main id="main-content">
         {/* Intro */}
         <section className="relative px-5 pb-16 pt-40 lg:px-8">
-          <div aria-hidden className="grid-bg pointer-events-none absolute inset-0" />
+          {/* Lightweight non-blocking ambient glow */}
           <div
             aria-hidden
-            className="animate-float pointer-events-none absolute -top-10 left-1/4 size-80 rounded-full bg-primary/20 blur-3xl"
+            className="pointer-events-none absolute left-1/2 top-24 -translate-x-1/2 h-[320px] w-[600px] max-w-full rounded-full bg-primary/8 blur-[120px]"
           />
-          <div
-            aria-hidden
-            className="animate-spin-slow pointer-events-none absolute right-[8%] top-40 hidden size-40 rounded-full border border-dashed border-primary/40 lg:block"
-          />
-          <div className="relative mx-auto max-w-5xl text-center">
-            <Reveal>
-              <span className="eyebrow">About six2eight</span>
-            </Reveal>
-            <Reveal delay={100} variant="blur">
-              <h1 className="text-display mt-6 text-5xl font-semibold leading-[1.02] tracking-tight md:text-8xl">
-                We make hard problems look <span className="text-shine italic">simple.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={250}>
-              <p className="mx-auto mt-8 max-w-2xl text-lg text-muted-foreground">
-                A full-service growth studio connecting strategy, design, technology and marketing —
-                so every part of your business pulls in the same direction.
-              </p>
-            </Reveal>
-            <Reveal delay={350}>
-              <div className="mt-10 flex justify-center">
-                <Magnetic>
-                  <a
-                    href={CALENDLY}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="pill group inline-flex items-center gap-2 bg-primary px-7 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-105"
-                  >
-                    Book a Free Call
-                    <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
-                  </a>
-                </Magnetic>
-              </div>
-            </Reveal>
+
+          <div className="relative mx-auto max-w-5xl text-center animate-fade-up">
+            <div>
+              <span className="eyebrow border-primary/40 shadow-[0_0_18px_-2px_rgba(154,253,13,0.35)]">
+                About six2eight
+              </span>
+            </div>
+            <h1 className="text-display mt-6 text-5xl font-semibold leading-[1.02] tracking-tight md:text-8xl">
+              We make hard problems look <span className="text-shine italic">simple.</span>
+            </h1>
+            <p className="mx-auto mt-8 max-w-2xl text-lg text-muted-foreground">
+              A full-service growth studio connecting strategy, design, technology and marketing —
+              so every part of your business pulls in the same direction.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <Magnetic>
+                <a
+                  href={CALENDLY}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pill group inline-flex items-center gap-2 bg-primary px-7 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-105"
+                >
+                  Book a Free Call
+                  <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+                </a>
+              </Magnetic>
+              <a
+                href="#team-photo"
+                className="pill inline-flex items-center gap-2 border border-border/80 bg-surface/40 px-6 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:border-primary/40 hover:text-primary"
+              >
+                Meet the Team
+              </a>
+            </div>
+
+            {/* Hero quick-proof badges - immediate paint & zero layout shift */}
+            <div className="mx-auto mt-14 grid max-w-4xl grid-cols-2 gap-3 border-t border-border/40 pt-8 sm:grid-cols-4">
+              {[
+                { icon: Globe2, label: "Global Reach", detail: "12 Time Zones" },
+                { icon: Trophy, label: "Proven Impact", detail: "180+ Shipped" },
+                { icon: Users2, label: "Senior Squads", detail: "40+ Specialists" },
+                { icon: Clock, label: "Rapid Delivery", detail: "Continuous Sprints" },
+              ].map(({ icon: Icon, label, detail }) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-border/60 bg-surface/30 p-3.5 text-center backdrop-blur-sm transition-all hover:border-primary/30"
+                >
+                  <div className="mx-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Icon className="size-4" />
+                  </div>
+                  <p className="mt-2 text-xs font-semibold text-foreground">{label}</p>
+                  <p className="text-[11px] text-muted-foreground">{detail}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -167,15 +189,17 @@ function About() {
         </div>
 
         {/* Team photo */}
-        <Reveal variant="scale">
-          <div className="group mx-auto mt-24 max-w-7xl px-5 lg:px-8">
+        <div id="team-photo" className="group mx-auto mt-24 max-w-7xl px-5 lg:px-8">
+          <Reveal variant="scale">
             <div className="relative overflow-hidden rounded-[2rem] border border-border">
-              <img
+              <LazyImage
                 src={team.url}
+                fallbackSrc="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80"
                 alt="The six2eight team"
                 width={1600}
                 height={912}
-                className="w-full object-cover transition duration-1000 group-hover:scale-105"
+                aspectRatio="aspect-[1600/912]"
+                className="w-full object-cover transition duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink to-transparent p-8">
                 <p className="pill inline-flex border border-border bg-ink/70 px-4 py-2 text-sm backdrop-blur">
@@ -183,11 +207,11 @@ function About() {
                 </p>
               </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
 
         {/* Mission / vision */}
-        <section className="mx-auto mt-24 grid max-w-7xl gap-6 px-5 md:grid-cols-2 lg:px-8">
+        <section className="content-visibility-auto mx-auto mt-24 grid max-w-7xl gap-6 px-5 md:grid-cols-2 lg:px-8">
           {[
             [
               "Mission",
@@ -198,9 +222,11 @@ function About() {
               "Be the partner growing brands trust to set the standard for connected, user-first digital systems.",
             ],
           ].map(([t, d], i) => (
-            <Reveal key={t} delay={i * 120} variant={i ? "right" : "left"}>
-              <TiltCard className="h-full p-10">
-                <span className="eyebrow">{t}</span>
+            <Reveal key={t} delay={i * 50} variant={i ? "right" : "left"}>
+              <TiltCard className="h-full border-primary/30 p-10 shadow-[0_0_30px_-5px_rgba(154,253,13,0.2)] hover:border-primary/60 hover:shadow-[0_0_40px_-2px_rgba(154,253,13,0.35)]">
+                <span className="eyebrow border-primary/40 shadow-[0_0_16px_-2px_rgba(154,253,13,0.35)]">
+                  {t}
+                </span>
                 <p className="mt-5 text-2xl font-medium leading-snug md:text-3xl">{d}</p>
               </TiltCard>
             </Reveal>
@@ -208,11 +234,13 @@ function About() {
         </section>
 
         {/* Stats */}
-        <section className="mx-auto mt-32 max-w-7xl px-5 lg:px-8">
+        <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <span className="eyebrow">Strategy</span>
+            <span className="eyebrow border-primary/40 shadow-[0_0_18px_-2px_rgba(154,253,13,0.35)]">
+              Strategy
+            </span>
           </Reveal>
-          <Reveal delay={100}>
+          <Reveal delay={40}>
             <h2 className="text-display mt-4 max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
               Why teams pick us for <span className="text-primary">growth</span>
             </h2>
@@ -221,8 +249,8 @@ function About() {
             {stats.map(([n, t, d], i) => (
               <Reveal
                 key={t}
-                delay={i * 80}
-                className="group bg-background p-8 transition-colors duration-500 hover:bg-surface"
+                delay={i * 35}
+                className="group bg-background p-8 transition-colors duration-300 hover:bg-surface"
               >
                 <CountUp
                   value={n}
@@ -236,21 +264,21 @@ function About() {
         </section>
 
         {/* Team */}
-        <section className="mx-auto mt-32 max-w-7xl px-5 lg:px-8">
+        <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
           <Reveal>
             <span className="eyebrow">Team</span>
           </Reveal>
-          <Reveal delay={100}>
+          <Reveal delay={40}>
             <h2 className="text-display mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
               The people behind the work
             </h2>
           </Reveal>
           <div className="mt-14 grid grid-cols-2 gap-5 md:grid-cols-4">
             {people.map(([n, r], i) => (
-              <Reveal key={n} delay={i * 60} variant="up">
+              <Reveal key={n} delay={i * 30} variant="up">
                 <TiltCard className="group p-5">
-                  <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-muted text-5xl font-semibold text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
-                    <span className="transition-transform duration-500 group-hover:scale-125 group-hover:-rotate-6">
+                  <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-muted text-5xl font-semibold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                    <span className="transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-6">
                       {n
                         .split(" ")
                         .map((x) => x[0])
@@ -266,68 +294,46 @@ function About() {
         </section>
 
         {/* Founder */}
-        <section className="relative mx-auto mt-32 max-w-7xl px-5 lg:px-8">
-          <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-40" />
-          <div
-            aria-hidden
-            className="animate-float pointer-events-none absolute -left-20 top-1/3 size-72 rounded-full bg-primary/10 blur-3xl"
-          />
-          <div className="relative">
+        <section className="content-visibility-auto relative mx-auto mt-32 max-w-7xl px-5 lg:px-8">
+          <div>
             <Reveal>
               <span className="eyebrow">
-                <span className="animate-glow-pulse size-1.5 rounded-full bg-primary" /> Our Founder
+                <span className="size-1.5 rounded-full bg-primary" /> Our Founder
               </span>
             </Reveal>
-            <Reveal delay={100}>
+            <Reveal delay={40}>
               <h2 className="text-display mt-4 max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
                 The mind behind <span className="text-primary">six2eight</span>
               </h2>
             </Reveal>
 
-            <div className="mt-14 grid items-stretch gap-16 lg:grid-cols-[5fr_6fr]">
+            <div className="mt-14 grid items-stretch gap-12 lg:grid-cols-[5fr_6fr]">
               {/* Portrait */}
               <Reveal variant="left" className="h-full">
-                <div className="group relative mx-auto w-full max-w-md">
-                  <div
-                    aria-hidden
-                    className="animate-spin-slow absolute -right-16 -top-16 size-40 rounded-full border border-dashed border-primary/25"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute -inset-4 rounded-[2.25rem] border border-border/70"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute -inset-9 rounded-[2.75rem] border border-primary/10"
-                  />
-                  <div
-                    aria-hidden
-                    className="animate-float absolute -bottom-12 -left-10 size-28 rounded-full bg-primary/20 blur-2xl"
-                  />
-                  <span
-                    aria-hidden
-                    className="absolute -left-7 -top-7 size-14 rounded-tl-[1.75rem] border-l-2 border-t-2 border-primary/60 transition-all duration-500 group-hover:-left-9 group-hover:-top-9"
-                  />
-                  <span
-                    aria-hidden
-                    className="absolute -bottom-7 -right-7 size-14 rounded-br-[1.75rem] border-b-2 border-r-2 border-primary/60 transition-all duration-500 group-hover:-bottom-9 group-hover:-right-9"
-                  />
-                  <div className="shine-sweep relative w-full overflow-hidden rounded-[1.75rem] border border-border shadow-elegant">
-                    <img
+                <div className="relative mx-auto w-full max-w-md">
+                  <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-surface shadow-[0_0_35px_-8px_rgba(154,253,13,0.25)] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_45px_-5px_rgba(154,253,13,0.38)]">
+                    <LazyImage
                       src={founder.image}
+                      fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
                       alt={founder.name}
-                      className="aspect-[4/5] w-full object-cover transition duration-1000 group-hover:scale-105"
+                      aspectRatio="aspect-[4/5]"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
                     <div
                       aria-hidden
-                      className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent"
                     />
-                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5">
-                      <span className="pill inline-flex size-12 items-center justify-center border border-border bg-ink/70 text-xs font-semibold tracking-[0.15em] text-primary backdrop-blur transition-transform duration-500 group-hover:rotate-6">
-                        SMT
-                      </span>
-                      <span className="text-[0.65rem] uppercase tracking-[0.4em] text-foreground/70">
-                        Founder
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
+                      <div>
+                        <p className="text-lg font-semibold tracking-tight text-foreground">
+                          {founder.name}
+                        </p>
+                        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                          {founder.role}
+                        </p>
+                      </div>
+                      <span className="rounded-full border border-primary/40 bg-surface/80 px-3 py-1 text-xs font-medium text-foreground shadow-[0_0_12px_rgba(154,253,13,0.35)] backdrop-blur-sm">
+                        six2eight
                       </span>
                     </div>
                   </div>
@@ -335,82 +341,77 @@ function About() {
               </Reveal>
 
               {/* Bio */}
-              <Reveal variant="right" delay={120} className="h-full">
-                <TiltCard className="flex h-full flex-col p-8 md:p-10">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/10 via-transparent to-transparent"
-                  />
-                  <Quote
-                    aria-hidden
-                    className="pointer-events-none absolute right-8 top-8 size-16 text-primary/15"
-                  />
-                  <h3 className="text-display relative text-3xl font-semibold tracking-tight md:text-4xl">
-                    {founder.name}
-                  </h3>
-                  <p className="relative mt-3 flex items-center gap-3 font-medium text-primary">
-                    <span aria-hidden className="h-px w-10 bg-primary" />
-                    {founder.role}
-                  </p>
-                  <blockquote className="relative mt-7 rounded-2xl border border-border bg-surface/60 p-6">
-                    <p className="text-xl font-medium italic leading-relaxed md:text-2xl">
-                      “{founder.quote}”
+              <Reveal variant="right" delay={50} className="h-full">
+                <div className="flex h-full flex-col justify-between rounded-3xl border border-primary/30 bg-card p-8 shadow-[0_0_35px_-8px_rgba(154,253,13,0.22)] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_45px_-5px_rgba(154,253,13,0.35)] md:p-10">
+                  <div>
+                    <h3 className="text-display text-3xl font-semibold tracking-tight md:text-4xl">
+                      {founder.name}
+                    </h3>
+                    <p className="mt-2.5 flex items-center gap-3 text-sm font-semibold uppercase tracking-wider text-primary">
+                      <span aria-hidden className="h-px w-8 bg-primary/80" />
+                      {founder.role}
                     </p>
-                  </blockquote>
-                  <div className="relative mt-6 space-y-4">
-                    {founder.bio.map((p, i) => (
-                      <p
-                        key={p.slice(0, 24)}
-                        className={
-                          i === 0
-                            ? "text-lg leading-relaxed text-foreground"
-                            : "leading-relaxed text-muted-foreground"
-                        }
-                      >
-                        {p}
+                    <blockquote className="mt-6 rounded-2xl border border-border/70 bg-surface/50 p-6">
+                      <p className="text-lg font-medium italic leading-relaxed text-foreground/90 md:text-xl">
+                        “{founder.quote}”
                       </p>
-                    ))}
+                    </blockquote>
+                    <div className="mt-6 space-y-4">
+                      {founder.bio.map((p, i) => (
+                        <p
+                          key={p.slice(0, 24)}
+                          className={
+                            i === 0
+                              ? "text-base leading-relaxed text-foreground"
+                              : "text-sm leading-relaxed text-muted-foreground"
+                          }
+                        >
+                          {p}
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                  <div
-                    aria-hidden
-                    className="relative mt-8 h-px w-full bg-gradient-to-r from-primary/60 via-border to-transparent"
-                  />
-                  <div className="relative mt-6 flex flex-wrap gap-3">
-                    <Magnetic>
-                      <a
-                        href={founder.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="pill group inline-flex items-center gap-2 border border-border px-5 py-2.5 text-sm font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                      >
-                        <Linkedin className="size-4" /> Connect on LinkedIn
-                        <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
-                      </a>
-                    </Magnetic>
-                    <Magnetic>
-                      <a
-                        href={founder.facebook}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="pill group inline-flex items-center gap-2 border border-border px-5 py-2.5 text-sm font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                      >
-                        <Facebook className="size-4" /> Follow on Facebook
-                        <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
-                      </a>
-                    </Magnetic>
+
+                  <div className="mt-8 border-t border-border/60 pt-6">
+                    <div className="flex flex-wrap gap-3">
+                      <Magnetic>
+                        <a
+                          href={founder.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="pill group inline-flex items-center gap-2 border border-primary/40 bg-surface/60 px-5 py-2.5 text-sm font-medium text-foreground shadow-[0_0_18px_-2px_rgba(154,253,13,0.35)] transition-all duration-300 hover:border-primary hover:bg-surface hover:shadow-[0_0_26px_rgba(154,253,13,0.6)]"
+                        >
+                          <Linkedin className="size-4 text-primary transition-colors group-hover:text-primary group-hover:drop-shadow-[0_0_6px_#9AFD0D]" />
+                          Connect on LinkedIn
+                          <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                        </a>
+                      </Magnetic>
+                      <Magnetic>
+                        <a
+                          href={founder.facebook}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="pill group inline-flex items-center gap-2 border border-primary/40 bg-surface/60 px-5 py-2.5 text-sm font-medium text-foreground shadow-[0_0_18px_-2px_rgba(154,253,13,0.35)] transition-all duration-300 hover:border-primary hover:bg-surface hover:shadow-[0_0_26px_rgba(154,253,13,0.6)]"
+                        >
+                          <Facebook className="size-4 text-primary transition-colors group-hover:text-primary group-hover:drop-shadow-[0_0_6px_#9AFD0D]" />
+                          Follow on Facebook
+                          <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                        </a>
+                      </Magnetic>
+                    </div>
                   </div>
-                </TiltCard>
+                </div>
               </Reveal>
             </div>
           </div>
         </section>
 
         {/* Approach */}
-        <section className="mx-auto mt-32 max-w-7xl px-5 lg:px-8">
+        <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
           <Reveal>
             <span className="eyebrow">Our Approach</span>
           </Reveal>
-          <Reveal delay={100}>
+          <Reveal delay={40}>
             <h2 className="text-display mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
               How we make a difference
             </h2>
@@ -420,16 +421,16 @@ function About() {
               <Reveal
                 as="li"
                 key={t}
-                delay={i * 80}
+                delay={i * 40}
                 variant="left"
-                className="group relative grid items-center gap-4 border-b border-border py-10 transition-all duration-500 hover:pl-6 md:grid-cols-[80px_1fr_1fr_48px]"
+                className="group relative grid items-center gap-4 border-b border-border py-10 transition-all duration-300 hover:pl-6 md:grid-cols-[80px_1fr_1fr_48px]"
               >
                 <span className="font-mono text-primary">0{i + 1}</span>
                 <h3 className="text-3xl font-semibold tracking-tight transition-colors group-hover:text-primary md:text-4xl">
                   {t}
                 </h3>
                 <p className="text-muted-foreground">{d}</p>
-                <span className="hidden size-12 items-center justify-center rounded-full border border-border transition-all duration-500 group-hover:rotate-12 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground md:inline-flex">
+                <span className="hidden size-12 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary shadow-[0_0_20px_rgba(154,253,13,0.35)] drop-shadow-[0_0_6px_rgba(154,253,13,0.4)] transition-all duration-300 group-hover:rotate-12 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_28px_rgba(154,253,13,0.7)] md:inline-flex">
                   <Icon className="size-5" />
                 </span>
               </Reveal>
@@ -438,36 +439,24 @@ function About() {
         </section>
 
         {/* Testimonials */}
-        <section className="mx-auto mt-32 max-w-7xl px-5 lg:px-8">
+        <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
           <Reveal>
             <span className="eyebrow">Testimonials</span>
           </Reveal>
-          <Reveal delay={100}>
+          <Reveal delay={40}>
             <h2 className="text-display mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
               What clients tell us
             </h2>
           </Reveal>
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {quotes.map(([c, q], i) => (
-              <Reveal key={c} delay={i * 100} variant="blur">
-                <TiltCard className="h-full p-8">
-                  <Quote className="size-8 text-primary" />
-                  <blockquote className="mt-5 text-lg leading-relaxed">“{q}”</blockquote>
-                  <figcaption className="mt-6 font-semibold text-primary">— {c}</figcaption>
-                </TiltCard>
-              </Reveal>
-            ))}
+          <div className="mt-14">
+            <ReviewCarousel />
           </div>
         </section>
 
         {/* CTA */}
-        <section className="mx-auto my-32 max-w-7xl px-5 lg:px-8">
+        <section className="content-visibility-auto mx-auto my-32 max-w-7xl px-5 lg:px-8">
           <Reveal variant="scale">
             <div className="relative overflow-hidden rounded-[2rem] bg-primary p-12 text-primary-foreground md:p-20">
-              <div
-                aria-hidden
-                className="animate-spin-slow absolute -right-20 -top-20 size-80 rounded-full border-2 border-dashed border-primary-foreground/20"
-              />
               <h2 className="text-display relative max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
                 Senior growth squads, ready when you are.
               </h2>

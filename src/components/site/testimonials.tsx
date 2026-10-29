@@ -1,45 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, TrendingUp, User } from "lucide-react";
-import { CALENDLY } from "@/data/site";
-
-const clientTestimonials = [
-  {
-    company: "Fiction Profits",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-10.webp",
-    quote:
-      "Communication was easy and we didn’t have to chase anyone. It’s nice when a project just clicks like that.",
-  },
-  {
-    company: "Core & More",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-11.webp",
-    quote:
-      "Issues were fixed fast, and the work was solid. Will definitely reach out for the next project.",
-  },
-  {
-    company: "DailyTime",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-9.webp",
-    quote:
-      "Responses were fast, things didn’t get messy, and the process actually made sense. You don’t always get that with designers, so it was refreshing.",
-  },
-  {
-    company: "Vizerto",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-8.webp",
-    quote:
-      "They made sure the app felt simple to use without losing any of the bells and whistles. Everything just worked better after their touch.",
-  },
-  {
-    company: "Storytime Owls",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/06/Story.webp",
-    quote:
-      "They actually get how users think, and the onboarding ended up feeling really smooth. We liked it so much we’re already planning the next round of changes.",
-  },
-  {
-    company: "GunMade",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/06/Container-7.webp",
-    quote:
-      "They explained things in plain English, which made choices easy. Felt like a real collaboration, not a cookie-cutter process.",
-  },
-];
+import { CALENDLY, clientTestimonials } from "@/data/site";
 
 export function Testimonials() {
   const scrollRef = useRef<HTMLDivElement>(null);

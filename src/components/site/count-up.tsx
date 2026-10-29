@@ -25,7 +25,7 @@ export function CountUp({ value, className }: { value: string; className?: strin
     let raf = 0;
     const run = () => {
       const start = performance.now();
-      const dur = 1400;
+      const dur = 600;
       const tick = (now: number) => {
         const p = Math.min(1, (now - start) / dur);
         const eased = 1 - Math.pow(1 - p, 3);
@@ -36,6 +36,12 @@ export function CountUp({ value, className }: { value: string; className?: strin
       raf = requestAnimationFrame(tick);
     };
 
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
+      run();
+      return () => cancelAnimationFrame(raf);
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -45,7 +51,7 @@ export function CountUp({ value, className }: { value: string; className?: strin
           }
         }
       },
-      { threshold: 0.4 },
+      { threshold: 0.05, rootMargin: "100px 0px" },
     );
     io.observe(el);
     return () => {

@@ -96,17 +96,15 @@ export function ServicesDropdown() {
   const closeTimer = useRef<number | undefined>(undefined);
   const menuId = useId();
 
-  // Position state calculated dynamically to guarantee fit without screen overflow
+  // Position state: dropdown is centered horizontally in viewport with smooth entrance
   const [coords, setCoords] = useState<{
     top: number;
-    left: number;
     width: number;
     arrowLeft: number;
   }>({
     top: 76,
-    left: 16,
-    width: 760,
-    arrowLeft: 380,
+    width: 820,
+    arrowLeft: 410,
   });
 
   const updatePosition = useCallback(() => {
@@ -115,30 +113,36 @@ export function ServicesDropdown() {
     const btnCenter = btnRect.left + btnRect.width / 2;
     const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1200;
 
-    // Compact total width fitting all 3 columns neatly
-    const menuWidth = Math.min(760, Math.max(320, viewportWidth - 32));
-    const idealLeft = btnCenter - menuWidth / 2;
-    const minLeft = 16;
-    const maxLeft = Math.max(minLeft, viewportWidth - menuWidth - 16);
-    const clampedLeft = Math.max(minLeft, Math.min(idealLeft, maxLeft));
-    const arrowLeft = Math.max(24, Math.min(btnCenter - clampedLeft, menuWidth - 24));
+    // Centered menu width fitting the 3 columns cleanly without overflow
+    const menuWidth = Math.min(820, Math.max(320, viewportWidth - 32));
+    // When menu is centered at left: 50% / translateX(-50%), its left edge is:
+    const dropdownLeft = (viewportWidth - menuWidth) / 2;
+    // Arrow points accurately to the center of the Services trigger button
+    const arrowLeft = Math.max(28, Math.min(btnCenter - dropdownLeft, menuWidth - 28));
 
     setCoords({
-      top: Math.round(btnRect.bottom + 10),
-      left: Math.round(clampedLeft),
+      top: Math.round(btnRect.bottom + 12),
       width: Math.round(menuWidth),
       arrowLeft: Math.round(arrowLeft),
     });
   }, []);
 
   const handleMouseEnter = () => {
-    window.clearTimeout(closeTimer.current);
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = undefined;
+    }
     updatePosition();
     setOpen(true);
   };
 
   const handleMouseLeave = () => {
-    closeTimer.current = window.setTimeout(() => setOpen(false), 220);
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+    }
+    closeTimer.current = window.setTimeout(() => {
+      setOpen(false);
+    }, 240);
   };
 
   useEffect(() => {
@@ -191,16 +195,20 @@ export function ServicesDropdown() {
           updatePosition();
           setOpen((o) => !o);
         }}
-        className="flex items-center gap-1.5 text-[15px] font-medium text-[#E0E0E0] hover:text-white transition-colors cursor-pointer py-1"
+        className={`flex items-center gap-1.5 text-[15px] font-medium transition-colors cursor-pointer py-1 ${
+          open ? "text-white" : "text-[#E0E0E0] hover:text-white"
+        }`}
       >
         <span>Services</span>
         <ChevronDown
           aria-hidden
-          className={`size-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            open ? "rotate-180 text-white" : "text-[#E0E0E0]"
+          }`}
         />
       </button>
 
-      {/* Dropdown Menu Modal positioned fixed & clamped to viewport bounds */}
+      {/* Dropdown Menu Modal centered horizontally on viewport with smooth cubic-bezier open animation */}
       <div
         id={menuId}
         data-open={open}
@@ -209,18 +217,20 @@ export function ServicesDropdown() {
         style={{
           position: "fixed",
           top: `${coords.top}px`,
-          left: `${coords.left}px`,
+          left: "50%",
           width: `${coords.width}px`,
+          transform: `translateX(-50%) ${
+            open ? "translateY(0) scale(1)" : "translateY(-12px) scale(0.96)"
+          }`,
+          transformOrigin: "top center",
           pointerEvents: open ? "auto" : "none",
         }}
-        className={`z-50 transition-all duration-200 ${
-          open
-            ? "opacity-100 visible translate-y-0"
-            : "opacity-0 invisible pointer-events-none -translate-y-1.5"
+        className={`z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          open ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
       >
         {/* Invisible bridge to prevent mouse leaving trigger gap */}
-        <div className="absolute -top-3 inset-x-0 h-3 pointer-events-auto" />
+        <div className="absolute -top-3.5 inset-x-0 h-4 pointer-events-auto" />
 
         {/* Top Notch Pointer Arrow pointing directly to Services trigger button */}
         <div
@@ -229,8 +239,8 @@ export function ServicesDropdown() {
           className="absolute -top-1.5 -translate-x-1/2 size-3 rotate-45 bg-white border-t border-l border-black/10 z-20 shadow-[-2px_-2px_4px_rgba(0,0,0,0.04)]"
         />
 
-        {/* Main White Dropdown Card */}
-        <div className="relative rounded-[24px] bg-white p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.18),0_4px_16px_rgba(0,0,0,0.06)] border border-black/10">
+        {/* Main White Dropdown Card with refined shadow and glassmorphism border */}
+        <div className="relative rounded-[24px] bg-white p-4 sm:p-5 shadow-[0_24px_60px_rgba(0,0,0,0.2),0_4px_16px_rgba(0,0,0,0.06)] border border-black/10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 items-start">
             {/* Column 1: Design Services */}
             <div className="flex flex-col min-w-0">

@@ -18,28 +18,33 @@ export function Reveal({
   as: Tag = "div",
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const [shown, setShown] = useState(false);
+  const [shown, setShown] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
       return;
     }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setShown(true);
-            io.disconnect();
+
+    const rect = el.getBoundingClientRect();
+    // Only animate elements that start below the initial viewport
+    if (rect.top > window.innerHeight + 100) {
+      setShown(false);
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              setShown(true);
+              io.disconnect();
+            }
           }
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
+        },
+        { threshold: 0.01, rootMargin: "200px 0px 100px 0px" },
+      );
+      io.observe(el);
+      return () => io.disconnect();
+    }
   }, []);
 
   return (
