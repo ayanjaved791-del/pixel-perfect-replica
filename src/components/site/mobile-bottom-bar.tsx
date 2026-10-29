@@ -432,7 +432,7 @@ export function MobileBottomBar() {
             {/* 3. Work Button */}
             <button
               type="button"
-              onClick={() => handleNav("work", "/#work")}
+              onClick={() => handleNav("work", "/work")}
               className="flex flex-1 flex-col items-center justify-center py-1 transition-colors duration-200 group cursor-pointer"
             >
               <div

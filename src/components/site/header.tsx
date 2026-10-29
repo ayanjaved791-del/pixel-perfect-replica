@@ -25,7 +25,7 @@ export function Header() {
           <nav className="flex items-center gap-6">
             <ServicesDropdown />
             <a
-              href="/#work"
+              href="/work"
               className="text-[15px] font-medium text-[#E0E0E0] hover:text-white transition-colors"
             >
               Work
