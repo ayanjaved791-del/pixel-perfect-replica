@@ -57,6 +57,12 @@ const mobileDevServices: MobileServiceItem[] = [
     icon: "/assets/dropdown/shopify-1.svg",
     href: "/#services",
   },
+  {
+    title: "Webflow Development Services",
+    subtitle: "Custom sites, no compromises",
+    icon: "/assets/dropdown/webflow-1.svg",
+    href: "/#services",
+  },
 ];
 
 const mobileAdServices: MobileServiceItem[] = [

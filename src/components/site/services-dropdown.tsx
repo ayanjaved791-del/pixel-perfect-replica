@@ -43,13 +43,13 @@ const developmentServices: ServiceItem[] = [
     href: "/services/web-development",
   },
   {
-    title: "WordPress Development",
+    title: "WordPress Development Services",
     subtitle: "Easy to manage & scale",
     icon: "/assets/dropdown/wordpress-1.svg",
     href: "/#services",
   },
   {
-    title: "Shopify Development",
+    title: "Shopify Development Services",
     subtitle: "Sell more with Shopify",
     icon: "/assets/dropdown/shopify-1.svg",
     href: "/#services",

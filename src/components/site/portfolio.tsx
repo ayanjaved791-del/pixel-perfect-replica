@@ -47,15 +47,22 @@ function ProjectCard({ p, large, index }: { p: Project; large?: boolean; index?:
         srcSet={srcSet(p.image)}
         sizes={large ? "(max-width: 1024px) 100vw, 66vw" : "(max-width: 1024px) 100vw, 33vw"}
         alt={`${p.name} — ${p.categories.join(", ")} concept project`}
-        loading="lazy"
+        loading="eager"
         decoding="async"
-        className="absolute inset-0 size-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+        onError={(e) => {
+          const target = e.currentTarget;
+          if (!target.src.includes("photo-1523275335684-37898b6baf30")) {
+            target.src =
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=90&w=1920";
+          }
+        }}
+        className="absolute inset-0 size-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] z-0"
       />
 
-      {/* depth wash for text legibility */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/95 via-background/35 to-background/5 opacity-80 transition-opacity duration-500 group-hover:opacity-95" />
+      {/* depth wash for text legibility while keeping picture clear and vibrant */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 via-background/25 to-transparent opacity-65 transition-opacity duration-500 group-hover:opacity-85 z-1" />
       {/* primary glow rising on hover */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(120%_90%_at_50%_120%,color-mix(in_oklab,var(--color-primary)_26%,transparent),transparent_65%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(120%_90%_at_50%_120%,color-mix(in_oklab,var(--color-primary)_26%,transparent),transparent_65%)] z-1" />
 
       {/* top meta row */}
       <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4 sm:p-5">

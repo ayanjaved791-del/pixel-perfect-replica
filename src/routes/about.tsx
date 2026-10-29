@@ -23,6 +23,7 @@ import { CountUp } from "@/components/site/count-up";
 import { Magnetic } from "@/components/site/magnetic";
 import { LazyImage } from "@/components/site/lazy-image";
 import { ReviewCarousel } from "@/components/site/review-carousel";
+import { VisionariesCarousel } from "@/components/site/visionaries-carousel";
 import { CALENDLY } from "@/data/site";
 
 const title = "About Us — six2eight Digital Growth Agency";
@@ -64,7 +65,7 @@ const people: [string, string][] = [
 const founder = {
   name: "Syed Md Talha",
   role: "Founder & CEO",
-  image: founderAsset.url,
+  image: "/assets/aistudio/1776519339994_81198518.png",
   linkedin: "https://www.linkedin.com/in/syedmdtalha26/",
   facebook: "https://www.facebook.com/syedmdtalha26/",
   bio: [
@@ -266,31 +267,8 @@ function About() {
         {/* Team */}
         <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <span className="eyebrow">Team</span>
+            <VisionariesCarousel />
           </Reveal>
-          <Reveal delay={40}>
-            <h2 className="text-display mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-              The people behind the work
-            </h2>
-          </Reveal>
-          <div className="mt-14 grid grid-cols-2 gap-5 md:grid-cols-4">
-            {people.map(([n, r], i) => (
-              <Reveal key={n} delay={i * 30} variant="up">
-                <TiltCard className="group p-5">
-                  <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-muted text-5xl font-semibold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                    <span className="transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-6">
-                      {n
-                        .split(" ")
-                        .map((x) => x[0])
-                        .join("")}
-                    </span>
-                  </div>
-                  <p className="mt-4 font-semibold">{n}</p>
-                  <p className="text-sm text-muted-foreground">{r}</p>
-                </TiltCard>
-              </Reveal>
-            ))}
-          </div>
         </section>
 
         {/* Founder */}
@@ -314,7 +292,7 @@ function About() {
                   <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-surface shadow-[0_0_35px_-8px_rgba(154,253,13,0.25)] transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_45px_-5px_rgba(154,253,13,0.38)]">
                     <LazyImage
                       src={founder.image}
-                      fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+                      fallbackSrc="/assets/founder.jpg"
                       alt={founder.name}
                       aspectRatio="aspect-[4/5]"
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
@@ -440,14 +418,21 @@ function About() {
 
         {/* Testimonials */}
         <section className="content-visibility-auto mx-auto mt-32 max-w-7xl px-5 lg:px-8">
-          <Reveal>
-            <span className="eyebrow">Testimonials</span>
-          </Reveal>
-          <Reveal delay={40}>
-            <h2 className="text-display mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-              What clients tell us
-            </h2>
-          </Reveal>
+          <div className="text-center">
+            <Reveal>
+              <div className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-1.5 text-xs font-semibold text-white shadow-xs">
+                <span className="size-2 rounded-full bg-[#9AFD0D] shadow-[0_0_8px_#9AFD0D]" />
+                Testimonials
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <h2 className="text-display mt-5 text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl">
+                Hear from those who've seen
+                <br />
+                the change!
+              </h2>
+            </Reveal>
+          </div>
           <div className="mt-14">
             <ReviewCarousel />
           </div>
@@ -457,7 +442,41 @@ function About() {
         <section className="content-visibility-auto mx-auto my-32 max-w-7xl px-5 lg:px-8">
           <Reveal variant="scale">
             <div className="relative overflow-hidden rounded-[2rem] bg-primary p-12 text-primary-foreground md:p-20">
-              <h2 className="text-display relative max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
+              {/* Moving Circle in Right Top Corner */}
+              <div className="absolute top-6 right-6 sm:top-8 sm:right-8 md:top-10 md:right-12 z-10 pointer-events-none select-none flex items-center justify-center">
+                <div className="relative flex items-center justify-center">
+                  {/* Rotating Circular Typography Badge */}
+                  <div className="absolute size-28 sm:size-36 md:size-44 animate-[spin_18s_linear_infinite]">
+                    <svg viewBox="0 0 100 100" className="size-full overflow-visible">
+                      <path
+                        id="ctaCirclePath"
+                        d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                        fill="none"
+                      />
+                      <text className="text-[7px] sm:text-[7.5px] font-bold uppercase tracking-[0.24em] fill-black/85">
+                        <textPath href="#ctaCirclePath" startOffset="0%">
+                          • SIX2EIGHT • START A PROJECT • DIGITAL GROWTH
+                        </textPath>
+                      </text>
+                    </svg>
+                  </div>
+
+                  {/* Inner Moving Video Circle */}
+                  <div className="relative size-18 sm:size-24 md:size-28 rounded-full overflow-hidden border-2 border-black/30 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:scale-105">
+                    <video
+                      src="/eye-loop.mp4"
+                      poster="/eye-frame.jpg"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="size-full object-cover scale-125"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <h2 className="text-display relative max-w-2xl sm:max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl">
                 Senior growth squads, ready when you are.
               </h2>
               <p className="relative mt-5 max-w-xl opacity-80">

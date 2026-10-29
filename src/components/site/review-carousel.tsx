@@ -1,6 +1,52 @@
 import { useRef, useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { CALENDLY, clientTestimonials } from "@/data/site";
+import { ArrowLeft, ArrowRight, MapPin, Mail } from "lucide-react";
+import { CALENDLY } from "@/data/site";
+
+export type Testimonial = {
+  company: string;
+  avatar: string;
+  quote: string;
+};
+
+// Exact testimonials matching the user screenshot image.png
+export const testimonialsList: Testimonial[] = [
+  {
+    company: "Vizerto",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-8.webp",
+    quote:
+      "They made sure the app felt simple to use without losing any of the bells and whistles. Everything just worked better after their touch.",
+  },
+  {
+    company: "Storytime Owls",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/06/Story.webp",
+    quote:
+      "They actually get how users think, and the onboarding ended up feeling really smooth. We liked it so much we’re already planning the next round of changes.",
+  },
+  {
+    company: "GunMade",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/06/Container-7.webp",
+    quote:
+      "They explained things in plain English, which made choices easy. Felt like a real collaboration, not a cookie-cutter process.",
+  },
+  {
+    company: "DailyTime",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-9.webp",
+    quote:
+      "Responses were fast, things didn’t get messy, and the process actually made sense. You don’t always get that with designers, so it was refreshing.",
+  },
+  {
+    company: "Core & More",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-11.webp",
+    quote:
+      "Issues were fixed fast, and the work was solid. Will definitely reach out for the next project.",
+  },
+  {
+    company: "Fiction Profits",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-10.webp",
+    quote:
+      "Communication was easy and we didn’t have to chase anyone. It’s nice when a project just clicks like that.",
+  },
+];
 
 export function ReviewCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -73,13 +119,13 @@ export function ReviewCarousel() {
         onMouseLeave={handleMouseLeaveOrUp}
         onMouseUp={handleMouseLeaveOrUp}
         onMouseMove={handleMouseMove}
-        className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 pt-1 cursor-grab active:cursor-grabbing no-scrollbar scrollbar-none"
+        className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 pt-1 cursor-grab active:cursor-grabbing no-scrollbar scrollbar-none"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {clientTestimonials.map((item, idx) => (
+        {testimonialsList.map((item, idx) => (
           <div
             key={`${item.company}-${idx}`}
-            className="w-[300px] sm:w-[350px] md:w-[370px] shrink-0"
+            className="w-[300px] sm:w-[350px] md:w-[380px] shrink-0"
           >
             <div className="relative flex flex-col justify-between h-[250px] sm:h-[270px] rounded-[24px] border border-[#E5E7EB] bg-white p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:border-neutral-300 text-neutral-900">
               {/* Card Top: Logo & Company Name */}
@@ -92,10 +138,7 @@ export function ReviewCarousel() {
                     loading="lazy"
                   />
                 </div>
-                <h3
-                  className="text-base sm:text-[17px] font-bold text-black tracking-tight"
-                  style={{ fontFamily: "'Manrope', sans-serif" }}
-                >
+                <h3 className="text-base sm:text-[17px] font-bold text-black tracking-tight">
                   {item.company}
                 </h3>
               </div>
@@ -126,7 +169,7 @@ export function ReviewCarousel() {
             type="button"
             onClick={() => handleScroll("left")}
             aria-label="Previous testimonials"
-            className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all hover:bg-white/20 hover:border-white/40 active:scale-95 cursor-pointer shadow-xs"
+            className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground transition-all hover:bg-accent active:scale-95 cursor-pointer shadow-xs"
           >
             <ArrowLeft className="size-4 stroke-[2]" />
           </button>
@@ -134,14 +177,14 @@ export function ReviewCarousel() {
             type="button"
             onClick={() => handleScroll("right")}
             aria-label="Next testimonials"
-            className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all hover:bg-white/20 hover:border-white/40 active:scale-95 cursor-pointer shadow-xs"
+            className="flex size-9 sm:size-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground transition-all hover:bg-accent active:scale-95 cursor-pointer shadow-xs"
           >
             <ArrowRight className="size-4 stroke-[2]" />
           </button>
         </div>
 
         {/* Progress Bar Track */}
-        <div className="relative h-[2px] w-full max-w-[540px] rounded-full bg-white/15 overflow-hidden">
+        <div className="relative h-[2px] w-full max-w-[540px] rounded-full bg-border overflow-hidden">
           <div
             className="absolute top-0 bottom-0 bg-[#9AFD0D] rounded-full transition-all duration-200"
             style={{
@@ -155,9 +198,9 @@ export function ReviewCarousel() {
       {/* Bottom Happy Customers Count & Consultation CTA Button */}
       <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <p className="text-xs sm:text-[13px] text-muted-foreground leading-tight font-normal">
-          200+ Happy Customers based on
+          Happy Customers based on complement
           <br />
-          complement and customer reviews
+          and customer reviews on Clutch
         </p>
 
         <a
@@ -165,10 +208,91 @@ export function ReviewCarousel() {
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center justify-center rounded-full bg-[#9AFD0D] px-6 sm:px-7 py-3 text-xs sm:text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95 shadow-xs"
-          style={{ fontFamily: "'Manrope', sans-serif" }}
         >
           Book a Free Consultation
         </a>
+      </div>
+
+      {/* Contact & Address Block matching bottom of image.png */}
+      <div className="mt-16 sm:mt-20 overflow-hidden rounded-[28px] sm:rounded-[36px] bg-[#0c0d10] p-4 sm:p-6 lg:p-7 border border-white/10 shadow-[0_24px_70px_rgba(0,0,0,0.55)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-4 sm:gap-6">
+          {/* Left Banner: Green gradient ambient card */}
+          <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#0c2a1a] via-[#091f14] to-[#06120c] border border-emerald-500/20 p-8 sm:p-10 flex flex-col justify-between min-h-[300px]">
+            {/* Glow */}
+            <div className="pointer-events-none absolute -top-12 -left-12 size-48 rounded-full bg-[#9AFD0D]/15 blur-3xl" />
+
+            {/* Logo */}
+            <div className="flex items-center gap-1.5 relative z-10">
+              <span className="text-2xl font-bold tracking-tight text-white">six</span>
+              <span className="text-2xl font-bold tracking-tight text-[#9AFD0D]">2</span>
+              <span className="text-2xl font-bold tracking-tight text-white">eight</span>
+            </div>
+
+            {/* Content */}
+            <div className="mt-12 sm:mt-16 relative z-10">
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
+                Elite product squads,
+                <br />
+                ready to deploy
+              </h3>
+              <p className="mt-4 text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md">
+                Let our senior cross-functional teams integrate seamlessly into your workflow to
+                design, develop, and ship your next high-fidelity digital ecosystem.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Column: Two stacked info cards */}
+          <div className="flex flex-col gap-4 justify-between">
+            {/* Card 1: Join us at / Address */}
+            <div className="rounded-[22px] bg-[#14161a] border border-white/8 p-6 sm:p-7 flex flex-col justify-center">
+              <div className="flex items-center gap-2.5 text-zinc-300">
+                <MapPin className="size-4 text-zinc-400" />
+                <h4 className="text-sm sm:text-base font-semibold text-white">Join us at</h4>
+              </div>
+              <div className="mt-3 pl-6">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                  ADDRESS
+                </span>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-300 font-medium">
+                  921 Town Centre Blvd, #266, Clayton, North Carolina 27520, US
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: Write to us / Emails */}
+            <div className="rounded-[22px] bg-[#14161a] border border-white/8 p-6 sm:p-7 flex flex-col justify-center">
+              <div className="flex items-center gap-2.5 text-zinc-300">
+                <Mail className="size-4 text-zinc-400" />
+                <h4 className="text-sm sm:text-base font-semibold text-white">Write to us</h4>
+              </div>
+              <div className="mt-3 pl-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                    FOR BUSINESS
+                  </span>
+                  <a
+                    href="mailto:hello@six2eight.com"
+                    className="mt-1 text-xs sm:text-sm text-zinc-300 hover:text-[#9AFD0D] font-medium transition-colors block"
+                  >
+                    hello@six2eight.com
+                  </a>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                    FOR JOBS
+                  </span>
+                  <a
+                    href="mailto:careers@six2eight.com"
+                    className="mt-1 text-xs sm:text-sm text-zinc-300 hover:text-[#9AFD0D] font-medium transition-colors block"
+                  >
+                    careers@six2eight.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

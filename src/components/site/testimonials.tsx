@@ -81,9 +81,9 @@ export function Testimonials() {
             className="text-3xl sm:text-5xl lg:text-[54px] font-bold tracking-tight text-black leading-[1.14]"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
-            Words from the People
+            Hear from those who’ve seen
             <br />
-            We’ve Worked With
+            the change!
           </h2>
         </div>
 
@@ -164,7 +164,7 @@ export function Testimonials() {
           {/* Progress Bar Track */}
           <div className="relative h-[2px] w-full max-w-[540px] rounded-full bg-[#E5E7EB] overflow-hidden">
             <div
-              className="absolute top-0 bottom-0 bg-black rounded-full transition-all duration-200"
+              className="absolute top-0 bottom-0 bg-[#9AFD0D] rounded-full transition-all duration-200"
               style={{
                 width: "25%",
                 left: `${(scrollProgress / 100) * 75}%`,
@@ -176,9 +176,9 @@ export function Testimonials() {
         {/* Bottom Happy Customers Count & Consultation CTA Button */}
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <p className="text-xs sm:text-[13px] text-[#4A4A4A] leading-tight font-normal">
-            200+ Happy Customers based on
+            Happy Customers based on complement
             <br />
-            complement and customer reviews
+            and customer reviews on Clutch
           </p>
 
           <a

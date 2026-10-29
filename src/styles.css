@@ -166,7 +166,9 @@
     border-radius: 9999px;
     border: 1px solid transparent;
     background-clip: padding-box;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -217,11 +219,11 @@
   gap: 0.625rem;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #6060603D;
+  background: #6060603d;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #FFFFFF;
+  color: #ffffff;
   backdrop-filter: blur(12px);
 }
 
@@ -240,7 +242,6 @@
   content-visibility: auto;
   contain-intrinsic-size: 0 600px;
 }
-
 
 @utility glass-card {
   position: relative;
@@ -1255,4 +1256,3 @@
 .animate-star-shimmer {
   animation: star-shimmer 2s ease-in-out infinite;
 }
-

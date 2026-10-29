@@ -242,7 +242,7 @@ export const projects: Project[] = [
   {
     name: "Elora",
     copy: "A concept brand identity exploring product storytelling and a connected e-commerce experience.",
-    image: shot("photo-1526628953301-3e589a6a8b74"),
+    image: shot("photo-1523275335684-37898b6baf30"),
     tools: ["Figma"],
     categories: ["Branding", "E-commerce"],
     year: "Concept",
@@ -445,24 +445,6 @@ export type ClientTestimonial = {
 
 export const clientTestimonials: ClientTestimonial[] = [
   {
-    company: "Fiction Profits",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-10.webp",
-    quote:
-      "Communication was easy and we didn’t have to chase anyone. It’s nice when a project just clicks like that.",
-  },
-  {
-    company: "Core & More",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-11.webp",
-    quote:
-      "Issues were fixed fast, and the work was solid. Will definitely reach out for the next project.",
-  },
-  {
-    company: "DailyTime",
-    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-9.webp",
-    quote:
-      "Responses were fast, things didn’t get messy, and the process actually made sense. You don’t always get that with designers, so it was refreshing.",
-  },
-  {
     company: "Vizerto",
     avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-8.webp",
     quote:
@@ -479,5 +461,23 @@ export const clientTestimonials: ClientTestimonial[] = [
     avatar: "https://cms.six2eight.com/wp-content/uploads/2025/06/Container-7.webp",
     quote:
       "They explained things in plain English, which made choices easy. Felt like a real collaboration, not a cookie-cutter process.",
+  },
+  {
+    company: "DailyTime",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/03/Container-9.webp",
+    quote:
+      "Responses were fast, things didn’t get messy, and the process actually made sense. You don’t always get that with designers, so it was refreshing.",
+  },
+  {
+    company: "Core & More",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-11.webp",
+    quote:
+      "Issues were fixed fast, and the work was solid. Will definitely reach out for the next project.",
+  },
+  {
+    company: "Fiction Profits",
+    avatar: "https://cms.six2eight.com/wp-content/uploads/2025/12/Container-10.webp",
+    quote:
+      "Communication was easy and we didn’t have to chase anyone. It’s nice when a project just clicks like that.",
   },
 ];
